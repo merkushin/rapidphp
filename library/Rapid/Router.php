@@ -59,6 +59,10 @@ class Router
 
     protected function processUri($uri)
     {
+        if (substr($uri, -1) == '/')
+        {
+            $uri = substr($uri, 0, -1);
+        }
         $parts = explode('/', $uri);
         $partsCount = count($parts);
         $partsMaxIndex = $partsCount - 1;

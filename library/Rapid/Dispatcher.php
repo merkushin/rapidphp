@@ -1,11 +1,11 @@
 <?php
 
-namespace Rapid;
-
 /**
  * @package Rapid
  * @author Dmitry Merkushin <merkushin@gmail.com>
  */
+
+namespace Rapid;
 
 class Dispatcher
 {

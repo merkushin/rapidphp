@@ -59,7 +59,7 @@ class Loader
 
         if (file_exists(self::$application->path() . $path))
         {
-            require_once self::$application->path() . $path;
+            include_once self::$application->path() . $path;
             return;
         }
 
@@ -70,6 +70,6 @@ class Loader
     public static function loadLibrary($class)
     {
         $filename = implode(DIRECTORY_SEPARATOR, explode('\\', $class)) . '.php';
-        require_once $filename;
+        include_once $filename;
     }
 }
