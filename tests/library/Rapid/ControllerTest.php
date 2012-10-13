@@ -38,6 +38,6 @@ class ControllerTest extends PHPUnit_Framework_TestCase
 
     public function testFullName()
     {
-        $this->assertEquals($this->controller->fullName(), 'Controller');
+        $this->assertEquals('Controller', $this->controller->fullName(), 'Controller full name is incorrect');
     }
 }

@@ -44,36 +44,36 @@ class RequestTest extends PHPUnit_Framework_TestCase
     public function testUri()
     {
         $request = $this->request;
-        $this->assertEquals($request->uri(), 'blog');
+        $this->assertEquals('blog', $request->uri(), 'Incorrect URI');
     }
 
     public function testModule()
     {
-        $this->assertEquals($this->request->module(), null);
+        $this->assertEquals(null, $this->request->module(), 'Module is not null');
         $this->request->setModule('admin');
-        $this->assertEquals($this->request->module(), 'admin');
+        $this->assertEquals('admin', $this->request->module(), 'Module is not "admin"');
     }
 
     public function testController()
     {
-        $this->assertEquals($this->request->controller(), null);
+        $this->assertEquals(null, $this->request->controller(), 'Controller is not null');
         $this->request->setController('my');
-        $this->assertEquals($this->request->controller(), 'my');
+        $this->assertEquals('my', $this->request->controller(), 'Controller is not "my"');
     }
 
     public function testAction()
     {
-        $this->assertEquals($this->request->action(), null);
+        $this->assertEquals(null, $this->request->action(), 'Action is not null');
         $this->request->setAction('new');
-        $this->assertEquals($this->request->action(), 'new');
+        $this->assertEquals('new', $this->request->action(), 'Action is not "new"');
     }
 
     public function testParams()
     {
         $request = $this->request;
-        $this->assertEquals($request->params(), array());
+        $this->assertEquals(array(), $request->params(), 'Params are not empty');
         $request->setParam('abc', 1);
-        $this->assertEquals($request->params(), array('abc' => 1));
-        $this->assertEquals($request->param('abc'), 1);
+        $this->assertEquals(array('abc' => 1), $request->params(), 'Params are not as expected');
+        $this->assertEquals(1, $request->param('abc'), 'abc does not match');
     }
 }

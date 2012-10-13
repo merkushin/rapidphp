@@ -34,6 +34,6 @@ class DispatcherText extends PHPUnit_Framework_TestCase
         $output = ob_get_clean();
         $expected = '<title>RapidPHP</title>
 <p>It\'s very simple web-framework!</p>';
-        $this->assertEquals($expected, $output);
+        $this->assertEquals($expected, $output, 'Output is wrong');
     }
 }
