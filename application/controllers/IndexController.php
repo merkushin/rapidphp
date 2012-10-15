@@ -6,11 +6,9 @@ class IndexController extends \Rapid\Controller
 {
     public function indexAction()
     {
-        echo <<<HTML
-<title>RapidPHP</title>
-<p>It's very simple web-framework!</p>
-HTML;
-
+        return array(
+            'var' => 'It\'s very simple web-framework!',
+        );
     }
 
     public function myAction()

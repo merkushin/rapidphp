@@ -5,10 +5,15 @@ use \Rapid\View;
 class ViewTest extends PHPUnit_Framework_TestCase
 {
     protected $path;
+    protected $expectedHtml;
 
     public function setUp()
     {
         $this->path = __DIR__ . '/../../../application/views/index/index.phtml';
+        $this->expectedHtml = <<<EOD
+<title>RapidPHP</title>
+<p>It's very simple web-framework!</p>
+EOD;
     }
 
     public function testCreate()
@@ -45,11 +50,7 @@ class ViewTest extends PHPUnit_Framework_TestCase
         $view->setFile($this->path);
         $view->var = 'It\'s very simple web-framework!';
 
-        $html = <<<EOD
-<title>RapidPHP</title>
-<p>It's very simple web-framework!</p>
-EOD;
-        $this->assertEquals($html, $view->render(), 'Render returns incorrect HTML');
+        $this->assertEquals($this->expectedHtml, $view->render(), 'Render returns incorrect HTML');
     }
 
     public function testDisplay()
@@ -58,12 +59,7 @@ EOD;
         $view->setFile($this->path);
         $view->var = 'It\'s very simple web-framework!';
 
-        $html = <<<EOD
-<title>RapidPHP</title>
-<p>It's very simple web-framework!</p>
-EOD;
-
-        $this->expectOutputString($html);
+        $this->expectOutputString($this->expectedHtml);
         $view->display();
     }
 }

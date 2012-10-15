@@ -9,8 +9,18 @@ namespace Rapid;
 
 class Controller
 {
+    /**
+     * @var \Rapid\Dispatcher
+     */
     protected $dispatcher;
+    /**
+     * @var \Rapid\Request
+     */
     protected $request;
+    /**
+     * @var \Rapid\View
+     */
+    protected $view;
 
     public function __construct($dispatcher, $request)
     {
@@ -18,9 +28,35 @@ class Controller
         $this->request = $request;
     }
 
+    /**
+     * @param View $view
+     *
+     * @return Controller
+     */
+    public function setView(\Rapid\View $view)
+    {
+        $this->view = $view;
+        return $this;
+    }
+
+    public function view()
+    {
+        return $this->view;
+    }
+
     public function preDispatch()
     {
 
+    }
+
+    public function process($action)
+    {
+        $variables = (array)$this->$action();
+        if ($this->view)
+        {
+            $this->view->setVariables($variables);
+            return $this->view->render();
+        }
     }
 
     public function postDispatch()

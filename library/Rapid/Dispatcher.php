@@ -36,9 +36,15 @@ class Dispatcher
             throw new \Rapid\Dispatcher\Exception('Action not found');
         }
 
+        $actionView = new \Rapid\View();
+        $actionView->setFile($this->viewFile($requestController, $requestAction));
+        $controller->setView($actionView);
+
         $controller->preDispatch();
-        $controller->$action();
+        $output = $controller->process($action);
         $controller->postDispatch();
+
+        echo $output;
     }
 
     public function getRequest()
@@ -116,5 +122,14 @@ class Dispatcher
         }
 
         throw new \Rapid\Dispatcher\Exception("Module not found");
+    }
+
+    protected function viewFile($controller, $action)
+    {
+        $controller = str_replace('-', '_', $controller);
+        $action = str_replace('-', '_', $action);
+        return $this->application->viewPath() .
+            $controller . DIRECTORY_SEPARATOR .
+            $action . '.phtml';
     }
 }
