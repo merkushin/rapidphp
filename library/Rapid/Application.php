@@ -25,6 +25,10 @@ class Application
      * @var string
      */
     protected $modelDirectory;
+    /**
+     * @var string
+     */
+    protected $viewDirectory;
 
     /**
      * @var array
@@ -51,6 +55,7 @@ class Application
     {
         $this->setControllerPath('controllers/');
         $this->setModelPath('models/');
+        $this->setViewPath('views/');
         return $this;
     }
 
@@ -74,6 +79,17 @@ class Application
     public function modelPath()
     {
         return $this->modelDirectory;
+    }
+
+    public function setViewPath($path)
+    {
+        $this->viewDirectory = $this->applicationPath . $path;
+        return $this;
+    }
+
+    public function viewPath()
+    {
+        return $this->viewDirectory;
     }
 
     protected function addApplicationToLoader()
