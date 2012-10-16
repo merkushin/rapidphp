@@ -37,7 +37,7 @@ class Dispatcher
         }
 
         $actionView = new \Rapid\View();
-        $actionView->setFile($this->viewFile($requestController, $requestAction));
+        $actionView->setFile($this->viewFile($requestModule, $requestController, $requestAction));
         $controller->setView($actionView);
 
         $controller->preDispatch();
@@ -124,11 +124,17 @@ class Dispatcher
         throw new \Rapid\Dispatcher\Exception("Module not found");
     }
 
-    protected function viewFile($controller, $action)
+    protected function viewFile($module, $controller, $action)
     {
+        if ($module)
+        {
+            $module = str_replace('-', '_', $module);
+            $module = substr($module, -1) != '/' ? $module . '/' : $module;
+        }
         $controller = str_replace('-', '_', $controller);
         $action = str_replace('-', '_', $action);
         return $this->application->viewPath() .
+            $module . DIRECTORY_SEPARATOR .
             $controller . DIRECTORY_SEPARATOR .
             $action . '.phtml';
     }
