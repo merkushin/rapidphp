@@ -26,11 +26,11 @@ class Loader
 
     public static function basicLoader($class)
     {
-        if (self::$application && preg_match('/(\w+)Model$/', $class))
+        if (self::$application && preg_match('/^Models\\.+$/', $class))
         {
             self::loadModel($class);
         }
-        elseif (self::$application && preg_match('/(\w+)Controller$/', $class))
+        elseif (self::$application && preg_match('/^Controllers\\.+$/', $class))
         {
             self::loadController($class);
         }
@@ -42,10 +42,21 @@ class Loader
 
     public static function loadModel($class)
     {
-
+        if (!self::loadApplicationClass($class))
+        {
+            throw new Loader\Exception('Model not found');
+        }
     }
 
     public static function loadController($class)
+    {
+        if (!self::loadApplicationClass($class))
+        {
+            throw new Loader\Exception('Controller not found');
+        }
+    }
+
+    public static function loadApplicationClass($class)
     {
         $pathParts = explode(DIRECTORY_SEPARATOR, $class);
         $class = array_pop($pathParts);
@@ -60,11 +71,10 @@ class Loader
         if (file_exists(self::$application->path() . $path))
         {
             include_once self::$application->path() . $path;
-            return;
+            return true;
         }
 
-
-        throw new Loader\Exception('Controller not found');
+        return false;
     }
 
     public static function loadLibrary($class)
