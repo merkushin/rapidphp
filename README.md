@@ -6,3 +6,7 @@ It is PHP micro-framework based on MVC-architecture for rapid build of web-appli
 Requirements:
 * PHP 5.3
 * PDO (if database support needed)
+
+ToDo
+* DataMapper
+* Session
