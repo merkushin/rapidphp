@@ -1,6 +1,5 @@
 <?php
-
-use Rapid\Model;
+use \Rapid\Model;
 
 class ModelTest extends PHPUnit_Framework_TestCase
 {

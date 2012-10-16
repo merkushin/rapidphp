@@ -7,6 +7,8 @@
 
 namespace Rapid;
 
+require_once 'Rapid/Loader/Exception.php';
+
 class Loader
 {
     /**
@@ -26,11 +28,11 @@ class Loader
 
     public static function basicLoader($class)
     {
-        if (self::$application && preg_match('/^Models\\.+$/', $class))
+        if (self::$application && substr($class, 0, 7) == 'Models\\')
         {
-            self::loadModel($class);
+            self::loadApplicationClass($class);
         }
-        elseif (self::$application && preg_match('/^Controllers\\.+$/', $class))
+        elseif (self::$application && substr($class, 0, 12) == 'Controllers\\')
         {
             self::loadController($class);
         }
@@ -80,6 +82,20 @@ class Loader
     public static function loadLibrary($class)
     {
         $filename = implode(DIRECTORY_SEPARATOR, explode('\\', $class)) . '.php';
-        include_once $filename;
+        $includePaths = explode(PATH_SEPARATOR, get_include_path());
+
+        foreach ($includePaths as $path)
+        {
+            $include = $path . DIRECTORY_SEPARATOR . $filename;
+            if (!file_exists($include))
+            {
+                continue;
+            }
+
+            include_once $include;
+            return;
+        }
+
+        throw new \Rapid\Loader\Exception('Library class not found: ' . $filename);
     }
 }

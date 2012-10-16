@@ -18,7 +18,7 @@ class LoaderTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \Rapid\Loader\Exception
      */
     public function testErrorLoadLibrary()
     {
@@ -31,6 +31,11 @@ class LoaderTest extends PHPUnit_Framework_TestCase
 
         $version = new \Rapid\Version();
         $this->assertInstanceOf('\Rapid\Version', $version);
+        $this->assertEquals('0.12.0', \Rapid\Version::get());
+
+        \Rapid\Loader::loadLibrary('Rapid\Controller');
+        $controller = new \Rapid\Controller(null, null);
+        $this->assertInstanceOf('\Rapid\Controller', $controller);
     }
 
     /**
