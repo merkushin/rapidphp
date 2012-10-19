@@ -225,6 +225,7 @@ abstract class Db
      * @param array $params
      *
      * @return \PDOStatement
+     * @throws Db\Exception
      */
     protected function executePreparedStatement($query, $params)
     {
@@ -237,4 +238,36 @@ abstract class Db
         }
         return $stmt;
     }
+
+    /**
+     * @param $tablename
+     * @param array $params
+     *
+     * @return mixed
+     */
+    abstract public function insert($tablename, array $params);
+
+    /**
+     * @param string $tablename
+     * @param array $params
+     * @param array $where
+     *
+     * @return mixed
+     */
+    abstract public function update($tablename, array $params, $where = array());
+
+    /**
+     * @param string $tablename
+     * @param array $where
+     *
+     * @return mixed
+     */
+    abstract public function delete($tablename, $where = array());
+
+    /**
+     * @param array $where
+     *
+     * @return array
+     */
+    abstract public function prepareWhere(array $where);
 }
