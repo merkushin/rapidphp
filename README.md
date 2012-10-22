@@ -8,5 +8,5 @@ Requirements:
 * PDO (if database support needed)
 
 ToDo
-* DataMapper
-* Session
+* Config
+* Custom Routes
