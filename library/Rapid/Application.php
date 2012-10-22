@@ -45,6 +45,7 @@ class Application
 
     public function run()
     {
+        Session::init('rapidphp');
         $router = new \Rapid\Router($this, new \Rapid\Request());
         $request = $router->route();
         $dispatcher = new \Rapid\Dispatcher($this, $request);
