@@ -173,7 +173,7 @@ abstract class Db
      */
     public function fetchRow($query, $params = array())
     {
-        $stmt = $this->executePreparedStatement($query, $params = array());
+        $stmt = $this->executePreparedStatement($query, $params);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 

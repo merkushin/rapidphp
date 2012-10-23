@@ -19,6 +19,11 @@ class DataMapper
         return $this->tablename;
     }
 
+    public function modelClass()
+    {
+        return $this->modelClass;
+    }
+
     /**
      * @return \Rapid\Db
      */
@@ -71,7 +76,7 @@ class DataMapper
             $data = $model->modifiedProperties();
             if (count($data))
             {
-                $this->getDb()->update($this->tablename, $data, array('id' => $id));
+                $this->db()->update($this->tablename, $data, array('id' => $id));
             }
         }
     }
@@ -83,7 +88,7 @@ class DataMapper
             return false;
         }
 
-        return $this->getDb()->delete($this->tablename, array('id' => $id));
+        return $this->db()->delete($this->tablename, array('id' => $id));
     }
 
     public function find($params = null, $create = false)
@@ -103,7 +108,7 @@ class DataMapper
 
     public function findById($id, $create = false)
     {
-        $select = sprintf('SELECT * FROM `%s` WHERE id = :id', $this->tablename);
+        $select = sprintf('SELECT * FROM %s WHERE id=:id', $this->tablename);
         $row = $this->db()->fetchRow($select, array('id' => $id));
 
         /**
@@ -111,19 +116,19 @@ class DataMapper
          */
         $model = new $this->modelClass;
 
-        if ( !$row )
+        if (!$row)
         {
             return $create ? $model : null;
         }
 
-        $model->setProperties( $row, true );
+        $model->setProperties($row, true);
 
         return $model;
     }
 
     public function fetchAll($where = array())
     {
-        $select = sprintf('SELECT * FROM `%s`', $this->tablename);
+        $select = sprintf('SELECT * FROM %s', $this->tablename);
         $params = array();
         if ($where)
         {
@@ -137,12 +142,11 @@ class DataMapper
         $ret = array();
         foreach ($rows as $row)
         {
-            /**
-             * @var Creogen_DomainObject $Object
-             */
-
             $m = new $this->modelClass;
-            $m->setProperties($row);
+            /**
+             * @var \Rapid\Model $m
+             */
+            $m->setProperties($row, true);
             $ret[] = $m;
         }
 
