@@ -29,7 +29,7 @@ class Request
         $this->server = $_SERVER;
         $this->cookie = $_COOKIE;
         $this->files = $_FILES;
-        $this->session = $_SESSION;
+        $this->session = isset($_SESSION) ? $_SESSION : array();
     }
 
     public function isPost()

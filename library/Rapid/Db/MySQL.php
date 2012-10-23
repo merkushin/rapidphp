@@ -75,7 +75,7 @@ class MySQL extends \Rapid\Db
         {
             $set[] = sprintf('`%s`=:%s', $field, $field);
         }
-        $query = sprintf($query, implode(', ', $set));
+        $query = sprintf($query, $tablename, implode(', ', $set));
 
         if (count($where))
         {
@@ -125,8 +125,12 @@ class MySQL extends \Rapid\Db
             }
             else
             {
+                /**
+                 * @todo build query with IN () if $value is array
+                 */
                 $clauseStatements[] = sprintf('`%s`=:%s', $field, $field);
                 $params[$field] = $value;
+
             }
         }
         $clause .= implode(' AND ', $clauseStatements);

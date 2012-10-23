@@ -122,6 +122,121 @@ class DbTest extends PHPUnit_Framework_TestCase
         $this->dropTestTable();
     }
 
+    /**
+     * @depends testQueryWithPreparedStatement
+     */
+    public function testInsert()
+    {
+        $this->createTestTable(false);
+        $db = \Rapid\Db::get();
+
+        $db->insert('my_table', array('id' => 1, 'string' => 'abc'));
+
+        $rows = $db->fetchAll('SELECT * FROM my_table');
+
+        $this->assertEquals(1, count($rows), 'Invalid number of rows');
+
+        $this->assertEquals(1, $rows[0]['id'], 'Invalid value of id field');
+        $this->assertEquals('abc', $rows[0]['string'], 'Invalid value of id field');
+        $this->dropTestTable();
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testUpdate()
+    {
+        $this->createTestTable(false);
+        $db = \Rapid\Db::get();
+
+        $db->insert('my_table', array('id' => 1, 'string' => 'abc'));
+        $db->insert('my_table', array('id' => 2, 'string' => 'abc'));
+
+        $rows = $db->fetchAll('SELECT * FROM my_table');
+
+        $this->assertEquals(2, count($rows), 'Invalid number of rows');
+        $this->assertEquals(1, $rows[0]['id'], 'Invalid value of id field');
+        $this->assertEquals('abc', $rows[0]['string'], 'Invalid value of id field');
+        $this->assertEquals(2, $rows[1]['id'], 'Invalid value of id field');
+        $this->assertEquals('abc', $rows[1]['string'], 'Invalid value of id field');
+
+        $db->update('my_table', array('string' => 'cba')); // update all rows
+
+        $rows = $db->fetchAll('SELECT * FROM my_table');
+
+        $this->assertEquals(2, count($rows), 'Invalid number of rows');
+        $this->assertEquals(1, $rows[0]['id'], 'Invalid value of id field');
+        $this->assertEquals('cba', $rows[0]['string'], 'Invalid value of id field');
+        $this->assertEquals(2, $rows[1]['id'], 'Invalid value of id field');
+        $this->assertEquals('cba', $rows[1]['string'], 'Invalid value of id field');
+
+        $db->update('my_table', array('string' => 'abc'), array('id' => 1)); // update row with id=1
+
+        $rows = $db->fetchAll('SELECT * FROM my_table');
+
+        $this->assertEquals(2, count($rows), 'Invalid number of rows');
+        $this->assertEquals(1, $rows[0]['id'], 'Invalid value of id field');
+        $this->assertEquals('abc', $rows[0]['string'], 'Invalid value of id field');
+        $this->assertEquals(2, $rows[1]['id'], 'Invalid value of id field');
+        $this->assertEquals('cba', $rows[1]['string'], 'Invalid value of id field');
+
+        $this->dropTestTable();
+    }
+
+    public function testDelete()
+    {
+        $this->createTestTable(false);
+        $db = \Rapid\Db::get();
+
+        $db->insert('my_table', array('id' => 1, 'string' => 'abc'));
+        $db->insert('my_table', array('id' => 2, 'string' => 'bca'));
+        $db->insert('my_table', array('id' => 3, 'string' => 'cab'));
+
+        $rows = $db->fetchAll('SELECT * FROM my_table');
+        $this->assertEquals(3, count($rows), 'Invalid number of rows');
+
+        $db->delete('my_table', array('id' => 2)); // delete row with id=2
+
+        $rows = $db->fetchAll('SELECT * FROM my_table');
+        $this->assertEquals(2, count($rows), 'Invalid number of rows');
+
+        $db->delete('my_table'); // delete all rows
+        $rows = $db->fetchAll('SELECT * FROM my_table');
+        $this->assertEquals(0, count($rows), 'Invalid number of rows');
+
+        $this->dropTestTable();
+    }
+
+    public function testPrepareWhere()
+    {
+        $db = \Rapid\Db::get();
+
+        $ret = $db->prepareWhere(array('id' => 1));
+        $this->assertEquals(
+            array(
+                ' WHERE `id`=:id',
+                array(
+                    'id' => 1,
+                ),
+            ),
+            $ret,
+            'Return array is invalid'
+        );
+
+        $ret = $db->prepareWhere(array('id' => 1, 'x' => 'str'));
+        $this->assertEquals(
+            array(
+                ' WHERE `id`=:id AND `x`=:x',
+                array(
+                    'id' => 1,
+                    'x' => 'str'
+                ),
+            ),
+            $ret,
+            'Return array is invalid'
+        );
+    }
+
     public function tearDown()
     {
         $db = \Rapid\Db::get();
