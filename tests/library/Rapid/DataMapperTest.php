@@ -80,6 +80,41 @@ class DataMapperTest extends PHPUnit_Framework_TestCase
         $this->dropTestTable();
     }
 
+    /**
+     * @depends testSaveAndFind
+     */
+    public function testDeleteAndFetchAll()
+    {
+        $this->createTestTable();
+
+        $mapper = new \Rapid\DataMapper();
+        $mapper->setTablename('my_table')
+            ->setModelClass('\Rapid\Model');
+
+
+        $model = new \Rapid\Model();
+        $model->string = 'abc';
+        $mapper->save($model);
+        $models = $mapper->fetchAll();
+        $this->assertEquals(1, count($models));
+
+        $model2 = new \Rapid\Model();
+        $model2->string = 'cba';
+        $mapper->save($model2);
+        $models = $mapper->fetchAll();
+        $this->assertEquals(2, count($models));
+
+        $mapper->delete($model);
+        $models = $mapper->fetchAll();
+        $this->assertEquals(1, count($models));
+
+        $mapper->delete($model2);
+        $models = $mapper->fetchAll();
+        $this->assertEquals(0, count($models));
+
+        $this->dropTestTable();
+    }
+
     protected function createTestTable()
     {
         $db = \Rapid\Db::get();
