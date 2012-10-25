@@ -11,8 +11,8 @@ class Route implements \Rapid\Router\RouteInterface
 {
     protected $rule;
 
-    protected $params;
-    protected $values;
+    protected $params = array();
+    protected $values = array();
 
     protected $defaultModule;
     protected $defaultController;

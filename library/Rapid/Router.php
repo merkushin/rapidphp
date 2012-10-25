@@ -9,8 +9,20 @@ namespace Rapid;
 
 class Router
 {
+    /**
+     * @var string
+     */
     protected $defaultController = 'index';
+
+    /**
+     * @var string
+     */
     protected $defaultAction = 'index';
+
+    /**
+     * @var array
+     */
+    protected $customRoutes = array();
 
     /**
      * @var \Rapid\Request
@@ -28,15 +40,40 @@ class Router
         $this->request = $request;
     }
 
+    public function setCustomRoutes(array $routes)
+    {
+        $this->customRoutes = $routes;
+    }
+
     /**
      * @return \Rapid\Request
      */
     public function route()
     {
         list($uri, $tail) = $this->getUriAndTail();
-        $this->processUri($uri);
+        if (!$this->processCustomRoutes())
+        {
+            $this->processUri($uri);
+        }
         $this->processTail($tail);
+
         return $this->request;
+    }
+
+    protected function processCustomRoutes()
+    {
+        /**
+         * @var \Rapid\Router\RouteInterface $route
+         */
+        foreach ($this->customRoutes as $route)
+        {
+            if ($route->pass($this->request))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected function getUriAndTail()

@@ -35,6 +35,11 @@ class Application
      */
     protected $modules = array('');
 
+    /**
+     * @var array
+     */
+    protected $customRoutes = array();
+
     public function __construct($applicationPath, $environment)
     {
         $this->applicationPath = $applicationPath;
@@ -47,6 +52,7 @@ class Application
     {
         Session::init('rapidphp');
         $router = new \Rapid\Router($this, new \Rapid\Request());
+        $router->setCustomRoutes($this->customRoutes);
         $request = $router->route();
         $dispatcher = new \Rapid\Dispatcher($this, $request);
         $dispatcher->dispatch();
@@ -121,6 +127,16 @@ class Application
             }
         }
         return false;
+    }
+
+    public function customRoutes()
+    {
+        return $this->customRoutes;
+    }
+
+    public function addCustomRoute(\Rapid\Router\RouteInterface $route)
+    {
+        $this->customRoutes[] = $route;
     }
 
     public function path()

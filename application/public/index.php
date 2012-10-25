@@ -11,4 +11,5 @@ require_once APPLICATION_PATH . '/../library/Rapid/Loader.php';
 
 $application = new \Rapid\Application(APPLICATION_PATH, 'development');
 $application->addModule('admin/');
+
 $application->run();
