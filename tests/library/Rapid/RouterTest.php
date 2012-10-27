@@ -52,4 +52,24 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $request = $this->router->route();
         $this->assertEquals(array('param1' => 1, 'param2' => 2), $request->params());
     }
+
+    public function testCustomRouteWithQueryString()
+    {
+        $_SERVER = array(
+            'REQUEST_URI' => '/my-address/?param1=2',
+        );
+        $request = new \Rapid\Request();
+
+        $application = new \Rapid\Application(__DIR__ . '/../../../application/', 'development');
+
+        $router = new \Rapid\Router($application, $request);
+        $router->setCustomRoutes(array(new \Rapid\Router\Route('my-address', 'index', 'index')));
+
+        $request = $router->route();
+        $this->assertInstanceOf('\Rapid\Request', $request);
+        $this->assertEquals('index', $request->action(), 'Incorrect Action');
+        $this->assertEquals('index', $request->controller(), 'Incorrect Controller');
+        $this->assertEquals('', $request->module(), 'Incorrect Module');
+        $this->assertEquals(2, $request->param('param1'));
+    }
 }

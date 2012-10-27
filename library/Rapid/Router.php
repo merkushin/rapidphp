@@ -50,12 +50,11 @@ class Router
      */
     public function route()
     {
-        list($uri, $tail) = $this->getUriAndTail();
         if (!$this->processCustomRoutes())
         {
-            $this->processUri($uri);
+            $this->processPath();
         }
-        $this->processTail($tail);
+        $this->processQuery();
 
         return $this->request;
     }
@@ -76,31 +75,10 @@ class Router
         return false;
     }
 
-    protected function getUriAndTail()
+    protected function processPath()
     {
-        $uri = $this->request->uri();
-
-        $parts = explode('?', $uri);
-        if (count($parts) == 2)
-        {
-            list($uri, $tail) = $parts;
-        }
-        else
-        {
-            $uri = array_shift($parts);
-            $tail = array();
-        }
-
-        return array($uri, $tail);
-    }
-
-    protected function processUri($uri)
-    {
-        if (substr($uri, -1) == '/')
-        {
-            $uri = substr($uri, 0, -1);
-        }
-        $parts = explode('/', $uri);
+        $path = $this->request->path();
+        $parts = explode('/', $path);
         $partsCount = count($parts);
         $partsMaxIndex = $partsCount - 1;
 
@@ -153,15 +131,15 @@ class Router
             ->setAction($action ? $action : $this->defaultAction);
     }
 
-    protected function processTail($tail)
+    protected function processQuery()
     {
-        if (!$tail)
+        if (!$this->request->query())
         {
             return;
         }
 
         $paramsMaxIndex = count($this->request->params());
-        foreach(explode('&', $tail) as $keyValuePair)
+        foreach(explode('&', $this->request->query()) as $keyValuePair)
         {
             if (strpos($keyValuePair, '=') !== false)
             {

@@ -60,6 +60,7 @@ class Request
      */
     public function uri()
     {
+        $uri = '';
         if (isset($this->server['REQUEST_URI']))
         {
             $uri = $this->server['REQUEST_URI'];
@@ -70,12 +71,71 @@ class Request
             $uri = substr($uri, 1);
         }
 
-        if (substr($uri, -1) == '/')
+        if (!$this->hasQueryPart($uri) && substr($uri, -1) == '/')
         {
             $uri = substr($uri, 0, -1);
         }
 
         return $uri;
+    }
+
+    public function path()
+    {
+        if (!$this->hasQueryPart())
+        {
+            return $this->uri();
+        }
+
+        list($path, $query) = $this->pathAndQuery();
+
+        if (substr($path, -1) == '/')
+        {
+            $path = substr($path, 0, -1);
+        }
+
+        return $path;
+    }
+
+    public function query()
+    {
+        if (!$this->hasQueryPart())
+        {
+            return '';
+        }
+        list($path, $query) = $this->pathAndQuery();
+        return $query;
+    }
+
+    protected function pathAndQuery()
+    {
+        $parts = explode('?', $this->uri());
+        if (count($parts) == 2)
+        {
+            list($path, $query) = $parts;
+        }
+        else
+        {
+            $path = array_shift($parts);
+            $query = implode('?', $parts);
+        }
+
+        return array($path, $query);
+    }
+
+    /**
+     * @param string $uri This is optional, but we should use this param inside uri() method,
+     * otherwise we will get infinite loop
+     *
+     * @return bool
+     */
+    protected function hasQueryPart($uri = null)
+    {
+        if (is_null($uri))
+        {
+            $uri = $this->uri();
+        }
+
+        return strpos($uri, '?') !== false;
     }
 
     public function get()

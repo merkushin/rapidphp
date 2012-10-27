@@ -50,7 +50,7 @@ class Route implements \Rapid\Router\RouteInterface
     public function pass(\Rapid\Request $request)
     {
         $rule = $this->prepareRuleForRegExp();
-        if (!preg_match($rule, $request->uri(), $matches))
+        if (!preg_match($rule, $request->path(), $matches))
         {
             return false;
         }
@@ -62,7 +62,7 @@ class Route implements \Rapid\Router\RouteInterface
 
     protected  function extractRulePlaceholders($rule)
     {
-        preg_match_all('/:(\w+)/', $rule, $matches);
+        preg_match_all('#:(\w+)#', $rule, $matches);
 
         $placeholderCount = count($matches[0]);
         for ($i = 0; $i < $placeholderCount; $i++)
@@ -79,7 +79,7 @@ class Route implements \Rapid\Router\RouteInterface
 
     protected  function prepareRuleForRegExp()
     {
-        return sprintf('#%s#i', $this->rule);
+        return sprintf('#^%s$#i', $this->rule);
     }
 
     protected function fillInValues($matches)
