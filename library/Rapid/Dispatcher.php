@@ -9,7 +9,13 @@ namespace Rapid;
 
 class Dispatcher
 {
+    /**
+     * @var \Rapid\Application
+     */
     protected $application;
+    /**
+     * @var \Rapid\Request
+     */
     protected $request;
 
     public function __construct(\Rapid\Application $application, \Rapid\Request $request)
@@ -47,7 +53,10 @@ class Dispatcher
         echo $output;
     }
 
-    public function getRequest()
+    /**
+     * @return \Rapid\Request
+     */
+    public function request()
     {
         return $this
             ->request;

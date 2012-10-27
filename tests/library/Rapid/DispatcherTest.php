@@ -27,6 +27,11 @@ class DispatcherText extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Rapid\Dispatcher', $this->disp);
     }
 
+    public function testRequest()
+    {
+        $this->assertInstanceOf('\Rapid\Request', $this->disp->request());
+    }
+
     public function testDispatch()
     {
         ob_start();

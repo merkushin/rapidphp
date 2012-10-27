@@ -40,4 +40,11 @@ class ControllerTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals('Controller', $this->controller->fullName(), 'Controller full name is incorrect');
     }
+
+    public function testView()
+    {
+        $this->assertEquals(null, $this->controller->view());
+        $this->controller->setView(new \Rapid\View());
+        $this->assertInstanceOf('\Rapid\View', $this->controller->view());
+    }
 }
