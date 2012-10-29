@@ -75,6 +75,11 @@ class Config
 
     protected function loadOptionsFromFile($filename)
     {
+        if (!file_exists($filename))
+        {
+            throw new \Rapid\Config\Exception('Config file doesn\'t exist');
+        }
+
         if (preg_match('/\.php$/i', $filename))
         {
             $ret = $this->loadPhpArray($filename);
@@ -85,12 +90,12 @@ class Config
         }
         else
         {
-            throw new \Rapid\Config\Exception('Unknown config file type');
+            throw new \Rapid\Config\Exception\Unsupported('Unknown config file type');
         }
 
         if (!is_array($ret))
         {
-            throw new Exception('Config file contains incorrect data');
+            throw new \Rapid\Config\Exception('Config file contains incorrect data');
         }
 
         return $ret;

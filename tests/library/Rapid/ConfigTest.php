@@ -102,4 +102,21 @@ class ConfigTest extends PHPUnit_Framework_TestCase
             $this->assertEquals('value_'.$i, $test2Config->get($key));
         }
     }
+
+    /**
+     * @expectedException \Rapid\Config\Exception
+     */
+    public function testLoadNotExistedFileError()
+    {
+        new \Rapid\Config('sadasd.php');
+    }
+
+
+    /**
+     * @expectedException \Rapid\Config\Exception\Unsupported
+     */
+    public function testLoadUnsupportedFileError()
+    {
+        new \Rapid\Config(__DIR__ . '/../../../phpunit.xml');
+    }
 }
