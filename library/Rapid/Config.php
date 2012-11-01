@@ -15,6 +15,9 @@ class Config
 {
     protected $options = array();
 
+    /**
+     * @param array|string|\Rapid\Config $options
+     */
     public function __construct($options = array())
     {
         if (is_string($options))

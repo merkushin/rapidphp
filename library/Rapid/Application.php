@@ -17,6 +17,11 @@ class Application
      * @var string
      */
     protected $environment;
+
+    /**
+     * @var \Rapid\Config
+     */
+    protected $config;
     /**
      * @var string
      */
@@ -142,5 +147,38 @@ class Application
     public function path()
     {
         return $this->applicationPath;
+    }
+
+    public function setConfig($config)
+    {
+        if (!($config instanceof \Rapid\Config))
+        {
+            $config = new \Rapid\Config($config);
+        }
+
+        if ($this->config && $this->config instanceof \Rapid\Config)
+        {
+            $this->config->merge($config);
+        }
+        else
+        {
+            $this->config = $config;
+        }
+        return $this;
+    }
+
+    public function config()
+    {
+        if (!$this->config)
+        {
+            $this->config = new \Rapid\Config();
+        }
+        return $this->config;
+    }
+
+    public function clearConfig()
+    {
+        $this->config = null;
+        return $this;
     }
 }

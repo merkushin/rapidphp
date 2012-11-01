@@ -53,4 +53,45 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         $application->setModelPath('my_models/');
         $this->assertEquals($application->modelPath(), $appPath . 'my_models/', 'Modified models paths are not equal');
     }
+
+    public function testConfig()
+    {
+        $app = $this->app;
+        $this->assertInstanceOf('\Rapid\Config', $app->config());
+        $this->assertEquals(array(), $app->config()->options());
+    }
+
+    /**
+     * @depends testConfig
+     */
+    public function testSetConfig()
+    {
+        $options = array(
+            'key1' => 'value1',
+            'key2' => 'value2',
+        );
+
+        $app = $this->app;
+        $this->assertEquals(array(), $app->config()->options());
+        $app->setConfig(new \Rapid\Config($options));
+        $this->assertEquals($options, $app->config()->options());
+    }
+
+    /**
+     * @depends testSetConfig
+     */
+    public function testClearConfig()
+    {
+        $options = array(
+            'key1' => 'value1',
+            'key2' => 'value2',
+        );
+
+        $app = $this->app;
+        $this->assertEquals(array(), $app->config()->options());
+        $app->setConfig(new \Rapid\Config($options));
+        $this->assertEquals($options, $app->config()->options());
+        $app->clearConfig();
+        $this->assertEquals(array(), $app->config()->options());
+    }
 }
