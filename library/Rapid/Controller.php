@@ -21,6 +21,14 @@ class Controller
      * @var \Rapid\View
      */
     protected $view;
+    /**
+     * @var string
+     */
+    protected $layout;
+    /**
+     * @var array
+     */
+    protected $layoutVariables;
 
     public function __construct($dispatcher, $request)
     {
@@ -49,8 +57,14 @@ class Controller
 
     }
 
+    public function init()
+    {
+
+    }
+
     public function process($action)
     {
+        $this->init();
         $variables = (array)$this->$action();
         if ($this->view)
         {
@@ -83,5 +97,38 @@ class Controller
         $parts = explode('\\', get_class($this));
         $fullClassName = $parts[count($parts) - 1];
         return $fullClassName;
+    }
+
+    public function useLayout()
+    {
+        return $this->layout ? true : false;
+    }
+
+    public function setLayout($layout)
+    {
+        $this->layout = $layout;
+        return $this;
+    }
+
+    public function layout()
+    {
+        return $this->layout;
+    }
+
+    public function setLayoutVariable($name, $value)
+    {
+        $this->layoutVariables[$name] = $value;
+        return $this;
+    }
+
+    public function layoutVariables()
+    {
+        return $this->layoutVariables;
+    }
+
+    public function redirect($url)
+    {
+        header(sprintf('Location: %s', $url));
+        exit;
     }
 }

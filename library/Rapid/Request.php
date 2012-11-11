@@ -19,7 +19,6 @@ class Request
     protected $server;
     protected $cookie;
     protected $files;
-    protected $session;
 
     public function __construct()
     {
@@ -29,7 +28,6 @@ class Request
         $this->server = $_SERVER;
         $this->cookie = $_COOKIE;
         $this->files = $_FILES;
-        $this->session = isset($_SESSION) ? $_SESSION : array();
     }
 
     public function isPost()
@@ -166,6 +164,13 @@ class Request
     public function files()
     {
         return $this->files;
+    }
+
+    public function session()
+    {
+        return isset($_SESSION)
+            ? $_SESSION
+            : array();
     }
 
     public function setModule($module)

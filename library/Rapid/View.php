@@ -86,6 +86,7 @@ class View
         {
             throw new \Rapid\View\Exception("View file not found");
         }
+        extract($this->variables);
         include $this->file;
         return ob_get_clean();
     }

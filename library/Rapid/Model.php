@@ -123,4 +123,18 @@ class Model
 
         return $this;
     }
+
+    public function name()
+    {
+        $name = preg_replace('/[A-Z]/', '_$0', $this->fullName());
+        $name = strtolower(substr($name, 1));
+        return $name;
+    }
+
+    public function fullName()
+    {
+        $parts = explode('\\', get_class($this));
+        $fullClassName = $parts[count($parts) - 1];
+        return $fullClassName;
+    }
 }

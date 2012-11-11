@@ -34,6 +34,10 @@ class Application
      * @var string
      */
     protected $viewDirectory;
+    /**
+     * @var string
+     */
+    protected $layoutDirectory;
 
     /**
      * @var array
@@ -63,11 +67,17 @@ class Application
         $dispatcher->dispatch();
     }
 
+    public function applicationPath()
+    {
+        return $this->applicationPath;
+    }
+
     protected function setApplicationPaths()
     {
         $this->setControllerPath('controllers/');
         $this->setModelPath('models/');
         $this->setViewPath('views/');
+        $this->setLayoutPath('layouts/');
         return $this;
     }
 
@@ -102,6 +112,16 @@ class Application
     public function viewPath()
     {
         return $this->viewDirectory;
+    }
+
+    public function setLayoutPath($path)
+    {
+        $this->layoutDirectory = $this->viewDirectory . $path;
+    }
+
+    public function layoutPath()
+    {
+        return $this->layoutDirectory;
     }
 
     protected function addApplicationToLoader()

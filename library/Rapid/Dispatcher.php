@@ -50,6 +50,15 @@ class Dispatcher
         $output = $controller->process($action);
         $controller->postDispatch();
 
+        if ($controller->useLayout())
+        {
+            $layout = new \Rapid\View();
+            $layout->setFile($this->layoutFile($controller->layout()));
+            $layout->setVariables((array)$controller->layoutVariables());
+            $layout->setVariable('content', $output);
+            $output = $layout->render();
+        }
+
         echo $output;
     }
 
@@ -58,8 +67,15 @@ class Dispatcher
      */
     public function request()
     {
-        return $this
-            ->request;
+        return $this->request;
+    }
+
+    /**
+     * @return \Rapid\Application
+     */
+    public function application()
+    {
+        return $this->application;
     }
 
     protected function buildControllerName($controller, $module)
@@ -146,5 +162,12 @@ class Dispatcher
             $module . DIRECTORY_SEPARATOR .
             $controller . DIRECTORY_SEPARATOR .
             $action . '.phtml';
+    }
+
+    protected function layoutFile($name)
+    {
+        $layoutsPath = $this->application->layoutPath();
+        $name = strpos($name, '.phtml') === false ? $name . '.phtml' : $name;
+        return $layoutsPath . $name;
     }
 }
