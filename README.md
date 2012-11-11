@@ -9,4 +9,6 @@ Requirements:
 
 ToDo
 * Config
-* Helpers (Flash, Form, Links)
+* Helpers (Flash, Links)
+* Paginator
+* Upload
