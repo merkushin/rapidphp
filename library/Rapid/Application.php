@@ -13,6 +13,7 @@ class Application
      * @var string
      */
     protected $applicationPath;
+
     /**
      * @var string
      */
@@ -22,18 +23,27 @@ class Application
      * @var \Rapid\Config
      */
     protected $config;
+
+    /**
+     * @var \Rapid\Application\Bootstrap
+     */
+    protected $bootstrap;
+
     /**
      * @var string
      */
     protected $controllerDirectory;
+
     /**
      * @var string
      */
     protected $modelDirectory;
+
     /**
      * @var string
      */
     protected $viewDirectory;
+
     /**
      * @var string
      */
@@ -55,6 +65,7 @@ class Application
         $this->environment = $environment;
         $this->setApplicationPaths();
         $this->addApplicationToLoader();
+        $this->setBootstrap();
     }
 
     public function run()
@@ -128,6 +139,16 @@ class Application
     {
         \Rapid\Loader::setApplication($this);
         return $this;
+    }
+
+    protected function setBootstrap()
+    {
+        $bootstrapPath = $this->applicationPath() . 'Bootstrap.php';
+        if (file_exists($bootstrapPath))
+        {
+            include $bootstrapPath;
+            $this->bootstrap = new \Bootstrap($this);
+        }
     }
 
     public function modules()

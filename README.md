@@ -8,7 +8,7 @@ Requirements:
 * PDO (if database support needed)
 
 ToDo
-* Config
 * Helpers (Flash, Links)
+* Form Elements, Validators and Filters
 * Paginator
 * Upload
