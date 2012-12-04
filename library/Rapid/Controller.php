@@ -66,8 +66,7 @@ class Controller
     {
         $this->init();
         $variables = (array)$this->$action();
-        if ($this->view)
-        {
+        if ($this->view) {
             $this->view->setVariables($variables);
             return $this->view->render();
         }
@@ -83,8 +82,7 @@ class Controller
         $fullClassName = $this->fullName();
         $matches = array();
         preg_match('/^(.+)Controller$/', $fullClassName, $matches);
-        if (!$matches)
-        {
+        if (!$matches) {
             throw new \Rapid\Controller\Exception('Controller has no name');
         }
         $name = preg_replace('/[A-Z]/', '_$0', $matches[1]);

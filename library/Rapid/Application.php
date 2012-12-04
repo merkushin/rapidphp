@@ -144,8 +144,7 @@ class Application
     protected function setBootstrap()
     {
         $bootstrapPath = $this->applicationPath() . 'Bootstrap.php';
-        if (file_exists($bootstrapPath))
-        {
+        if (file_exists($bootstrapPath)) {
             include $bootstrapPath;
             $this->bootstrap = new \Bootstrap($this);
         }
@@ -165,10 +164,8 @@ class Application
     public function hasModule($module)
     {
         $module = substr($module, -1) == '/' ? $module : $module . '/';
-        foreach ($this->modules() as $m)
-        {
-            if ($module == $m)
-            {
+        foreach ($this->modules() as $m) {
+            if ($module == $m) {
                 return true;
             }
         }
@@ -192,17 +189,13 @@ class Application
 
     public function setConfig($config)
     {
-        if (!($config instanceof \Rapid\Config))
-        {
+        if (!($config instanceof \Rapid\Config)) {
             $config = new \Rapid\Config($config);
         }
 
-        if ($this->config && $this->config instanceof \Rapid\Config)
-        {
+        if ($this->config && $this->config instanceof \Rapid\Config) {
             $this->config->merge($config);
-        }
-        else
-        {
+        } else {
             $this->config = $config;
         }
         return $this;
@@ -210,8 +203,7 @@ class Application
 
     public function config()
     {
-        if (!$this->config)
-        {
+        if (!$this->config) {
             $this->config = new \Rapid\Config();
         }
         return $this->config;

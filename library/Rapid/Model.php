@@ -12,12 +12,12 @@ class Model
     /**
      * @var array
      */
-    protected $_params      = array();
+    protected $_params = array();
 
     /**
      * @var array
      */
-    protected $_modified    = array();
+    protected $_modified = array();
 
     /**
      * @return null|int
@@ -42,16 +42,16 @@ class Model
      * @param string $name
      * @param mixed $value
      * @param bool $init Mark field as modified if false
+     *
      * @return \Rapid\Model
      */
     public function setProperty($name, $value, $init = false)
     {
-        if (!$init && (!isset($this->_params[ $name ]) || $this->_params[ $name ] != $value))
-        {
+        if (!$init && (!isset($this->_params[$name]) || $this->_params[$name] != $value)) {
             $this->_modified[] = $name;
         }
 
-        $this->_params[ $name ] = $value;
+        $this->_params[$name] = $value;
 
         return $this;
     }
@@ -59,6 +59,7 @@ class Model
     /**
      * @param string $name
      * @param mixed $value
+     *
      * @return void
      */
     public function __set($name, $value)
@@ -68,17 +69,19 @@ class Model
 
     /**
      * @param string $name
+     *
      * @return mixed
      */
     public function property($name)
     {
-        $val = isset($this->_params[ $name ]) ?
-            $this->_params[ $name ] : null;
+        $val = isset($this->_params[$name]) ?
+            $this->_params[$name] : null;
         return $val;
     }
 
     /**
      * @param string $name
+     *
      * @return mixed
      */
     public function __get($name)
@@ -101,9 +104,8 @@ class Model
     {
         $return = array();
 
-        foreach ($this->_modified as $name)
-        {
-            $return[ $name ] = $this->property( $name );
+        foreach ($this->_modified as $name) {
+            $return[$name] = $this->property($name);
         }
 
         return $return;
@@ -112,12 +114,12 @@ class Model
     /**
      * @param array $data
      * @param bool $init Mark fields as modified if false
+     *
      * @return \Rapid\Model
      */
     public function setProperties(array $data, $init = false)
     {
-        foreach ($data as $name => $value)
-        {
+        foreach ($data as $name => $value) {
             $this->setProperty($name, $value, $init);
         }
 

@@ -31,12 +31,9 @@ abstract class ElementInterface
 
     public function setAttribute($name, $value)
     {
-        if ($name == 'value')
-        {
+        if ($name == 'value') {
             $this->setValue($value);
-        }
-        else
-        {
+        } else {
             $this->attributes[$name] = $value;
         }
         return $this;
@@ -45,8 +42,7 @@ abstract class ElementInterface
     protected function attributes()
     {
         $pairs = array();
-        foreach ($this->attributes as $name => $value)
-        {
+        foreach ($this->attributes as $name => $value) {
             $value = strtr($value, '"', '\"');
             $pairs[] = sprintf('%s="%s"', $name, $value);
         }
@@ -55,8 +51,7 @@ abstract class ElementInterface
 
     public function label()
     {
-        if (!$this->label)
-        {
+        if (!$this->label) {
             return '';
         }
 

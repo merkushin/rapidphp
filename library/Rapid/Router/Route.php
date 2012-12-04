@@ -21,23 +21,19 @@ class Route implements \Rapid\Router\RouteInterface
     public function __construct($rule, $controller = 'index', $action = 'index', $module = '')
     {
         $this->rule = $rule;
-        if (preg_match('/:\w+/', $rule))
-        {
+        if (preg_match('/:\w+/', $rule)) {
             $this->rule = $this->extractRulePlaceholders($rule);
         }
 
-        if (!is_null($module))
-        {
+        if (!is_null($module)) {
             $this->defaultModule = $module;
         }
 
-        if ($controller)
-        {
+        if ($controller) {
             $this->defaultController = $controller;
         }
 
-        if ($action)
-        {
+        if ($action) {
             $this->defaultAction = $action;
         }
     }
@@ -50,8 +46,7 @@ class Route implements \Rapid\Router\RouteInterface
     public function pass(\Rapid\Request $request)
     {
         $rule = $this->prepareRuleForRegExp();
-        if (!preg_match($rule, $request->path(), $matches))
-        {
+        if (!preg_match($rule, $request->path(), $matches)) {
             return false;
         }
 
@@ -60,13 +55,12 @@ class Route implements \Rapid\Router\RouteInterface
         return true;
     }
 
-    protected  function extractRulePlaceholders($rule)
+    protected function extractRulePlaceholders($rule)
     {
         preg_match_all('#:(\w+)#', $rule, $matches);
 
         $placeholderCount = count($matches[0]);
-        for ($i = 0; $i < $placeholderCount; $i++)
-        {
+        for ($i = 0; $i < $placeholderCount; $i++) {
             $placeholder = $matches[0][$i];
             $paramName = $matches[1][$i];
 
@@ -77,22 +71,19 @@ class Route implements \Rapid\Router\RouteInterface
         return $rule;
     }
 
-    protected  function prepareRuleForRegExp()
+    protected function prepareRuleForRegExp()
     {
         return sprintf('#^%s$#i', $this->rule);
     }
 
     protected function fillInValues($matches)
     {
-        if (!$this->params)
-        {
+        if (!$this->params) {
             return;
         }
 
-        foreach ($matches as $key => $value)
-        {
-            if (!$key)
-            {
+        foreach ($matches as $key => $value) {
+            if (!$key) {
                 continue;
             }
 
@@ -106,8 +97,7 @@ class Route implements \Rapid\Router\RouteInterface
             ->setController($this->controllerName())
             ->setAction($this->actionName());
 
-        foreach ($this->additionalParams() as $key => $value)
-        {
+        foreach ($this->additionalParams() as $key => $value) {
             $request->setParam($key, $value);
         }
     }
@@ -115,8 +105,7 @@ class Route implements \Rapid\Router\RouteInterface
     protected function moduleName()
     {
         $module = $this->defaultModule;
-        if ($key = array_search('module', $this->params))
-        {
+        if ($key = array_search('module', $this->params)) {
             $module = !empty($this->values[$key])
                 ? $this->values[$key] . '/'
                 : $module;
@@ -127,8 +116,7 @@ class Route implements \Rapid\Router\RouteInterface
     protected function controllerName()
     {
         $controller = $this->defaultController;
-        if ($key = array_search('controller', $this->params))
-        {
+        if ($key = array_search('controller', $this->params)) {
             $controller = !empty($this->values[$key])
                 ? $this->values[$key]
                 : $controller;
@@ -139,8 +127,7 @@ class Route implements \Rapid\Router\RouteInterface
     protected function actionName()
     {
         $action = $this->defaultAction;
-        if ($key = array_search('action', $this->params))
-        {
+        if ($key = array_search('action', $this->params)) {
             $action = !empty($this->values[$key])
                 ? $this->values[$key]
                 : $action;
@@ -151,15 +138,12 @@ class Route implements \Rapid\Router\RouteInterface
     protected function additionalParams()
     {
         $ret = array();
-        foreach ($this->params as $key => $name)
-        {
-            if (in_array($name, array('module', 'controller', 'action')))
-            {
+        foreach ($this->params as $key => $name) {
+            if (in_array($name, array('module', 'controller', 'action'))) {
                 continue;
             }
 
-            if (!isset($this->values[$key]))
-            {
+            if (!isset($this->values[$key])) {
                 continue;
             }
 

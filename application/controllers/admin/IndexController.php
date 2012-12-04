@@ -1,6 +1,7 @@
 <?php
 
 namespace Controllers\Admin;
+
 use \Rapid\Controller;
 
 class IndexController extends \Rapid\Controller

@@ -13,8 +13,7 @@ class SQLite extends \Rapid\Db
     {
         $dsn = sprintf('%s:', $this->options['driver']);
 
-        if (empty($this->options['dbname']))
-        {
+        if (empty($this->options['dbname'])) {
             throw new \Rapid\Db\Exception('Database name not set');
         }
 
@@ -34,8 +33,7 @@ class SQLite extends \Rapid\Db
         $query = 'INSERT INTO %s(%s) VALUES(%s)';
         $fields = array();
         $placeholders = array();
-        foreach ($params as $field => $value)
-        {
+        foreach ($params as $field => $value) {
             $fields[] = $field;
             $placeholders[] = sprintf(':%s', $field);
         }
@@ -55,14 +53,12 @@ class SQLite extends \Rapid\Db
     {
         $query = 'UPDATE %s SET %s';
         $set = array();
-        foreach ($params as $field => $value)
-        {
+        foreach ($params as $field => $value) {
             $set[] = sprintf('%s=:%s', $field, $field);
         }
         $query = sprintf($query, $tablename, implode(', ', $set));
 
-        if (count($where))
-        {
+        if (count($where)) {
             list($whereClause, $whereParams) = $this->prepareWhere($where);
             $query .= $whereClause;
             $params = array_merge($params, $whereParams);
@@ -81,8 +77,7 @@ class SQLite extends \Rapid\Db
     {
         $query = sprintf('DELETE FROM %s', $tablename);
         $params = array();
-        if (count($where))
-        {
+        if (count($where)) {
             list($whereClause, $whereParams) = $this->prepareWhere($where);
             $query .= $whereClause;
             $params = array_merge($params, $whereParams);
@@ -101,14 +96,10 @@ class SQLite extends \Rapid\Db
         $params = array();
 
         $clauseStatements = array();
-        foreach ($where as $field => $value)
-        {
-            if (is_numeric($field))
-            {
+        foreach ($where as $field => $value) {
+            if (is_numeric($field)) {
                 $clauseStatements[] = $value;
-            }
-            else
-            {
+            } else {
                 /**
                  * @todo build query with IN () if $value is array
                  */

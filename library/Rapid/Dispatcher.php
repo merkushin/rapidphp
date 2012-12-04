@@ -37,8 +37,7 @@ class Dispatcher
         $controller = new $controllerName($this, $this->request);
 
         $action = $this->processActionName($requestAction);
-        if (!method_exists($controller, $action))
-        {
+        if (!method_exists($controller, $action)) {
             throw new \Rapid\Dispatcher\Exception('Action not found');
         }
 
@@ -50,8 +49,7 @@ class Dispatcher
         $output = $controller->process($action);
         $controller->postDispatch();
 
-        if ($controller->useLayout())
-        {
+        if ($controller->useLayout()) {
             $layout = new \Rapid\View();
             $layout->setFile($this->layoutFile($controller->layout()));
             $layout->setVariables((array)$controller->layoutVariables());
@@ -80,8 +78,7 @@ class Dispatcher
 
     protected function buildControllerName($controller, $module)
     {
-        if ($module)
-        {
+        if ($module) {
             $this->validateModule($module);
         }
 
@@ -99,14 +96,12 @@ class Dispatcher
 
     protected function moduleToNamespaces($module)
     {
-        if (!$module)
-        {
+        if (!$module) {
             return '';
         }
 
-        if (substr($module, -1) == '/')
-        {
-            $module = substr($module, 0, strlen($module) -1);
+        if (substr($module, -1) == '/') {
+            $module = substr($module, 0, strlen($module) - 1);
         }
 
         return implode(
@@ -141,8 +136,7 @@ class Dispatcher
 
     protected function validateModule($module)
     {
-        if ($this->application->hasModule($module))
-        {
+        if ($this->application->hasModule($module)) {
             return true;
         }
 
@@ -151,8 +145,7 @@ class Dispatcher
 
     protected function viewFile($module, $controller, $action)
     {
-        if ($module)
-        {
+        if ($module) {
             $module = str_replace('-', '_', $module);
             $module = substr($module, -1) != '/' ? $module . '/' : $module;
         }

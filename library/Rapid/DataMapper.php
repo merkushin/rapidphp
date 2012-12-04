@@ -29,8 +29,7 @@ class DataMapper
      */
     protected function db()
     {
-        if (!$this->db)
-        {
+        if (!$this->db) {
             $connectionName = $this->connectionName ? $this->connectionName : 'default';
             $this->db = \Rapid\Db::get($connectionName);
         }
@@ -64,18 +63,14 @@ class DataMapper
 
     public function save(\Rapid\Model $model)
     {
-        if (null === ($id = $model->id()))
-        {
+        if (null === ($id = $model->id())) {
             $data = $model->properties();
             unset($data['id']);
             $id = $this->db()->insert($this->tablename, $data);
             $model->setId($id);
-        }
-        else
-        {
+        } else {
             $data = $model->modifiedProperties();
-            if (count($data))
-            {
+            if (count($data)) {
                 $this->db()->update($this->tablename, $data, array('id' => $id));
             }
         }
@@ -83,8 +78,7 @@ class DataMapper
 
     public function delete(\Rapid\Model $model)
     {
-        if (!$id = $model->id())
-        {
+        if (!$id = $model->id()) {
             return false;
         }
 
@@ -93,12 +87,9 @@ class DataMapper
 
     public function find($params = null, $create = false)
     {
-        if (!$params)
-        {
+        if (!$params) {
             return $this->fetchAll();
-        }
-        elseif (is_numeric($params) || is_null($params))
-        {
+        } elseif (is_numeric($params) || is_null($params)) {
             return $this->findById($params, $create);
         }
 
@@ -116,8 +107,7 @@ class DataMapper
          */
         $model = new $this->modelClass;
 
-        if (!$row)
-        {
+        if (!$row) {
             return $create ? $model : null;
         }
 
@@ -130,8 +120,7 @@ class DataMapper
     {
         $select = sprintf('SELECT * FROM %s', $this->tablename);
         $params = array();
-        if ($where)
-        {
+        if ($where) {
             list($whereStatement, $whereParams) = $this->db()->prepareWhere($where);
             $select .= $whereStatement;
             $params = $whereParams;
@@ -140,8 +129,7 @@ class DataMapper
         $rows = $this->db()->fetchAll($select, $params);
 
         $ret = array();
-        foreach ($rows as $row)
-        {
+        foreach ($rows as $row) {
             $m = new $this->modelClass;
             /**
              * @var \Rapid\Model $m

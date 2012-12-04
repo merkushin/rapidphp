@@ -44,8 +44,7 @@ class View
 
     public function setVariables(array $vars)
     {
-        foreach ($vars as $name => $value)
-        {
+        foreach ($vars as $name => $value) {
             $this->setVariable($name, $value);
         }
         return $this;
@@ -82,8 +81,7 @@ class View
     public function render()
     {
         ob_start();
-        if (!file_exists($this->file))
-        {
+        if (!file_exists($this->file)) {
             throw new \Rapid\View\Exception("View file not found");
         }
         extract($this->variables);

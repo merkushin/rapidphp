@@ -32,8 +32,7 @@ class Request
 
     public function isPost()
     {
-        if (isset($this->server['REQUEST_METHOD']))
-        {
+        if (isset($this->server['REQUEST_METHOD'])) {
             return $this->server['REQUEST_METHOD'] == 'POST';
         }
 
@@ -43,8 +42,8 @@ class Request
     public function isXmlHttpRequest()
     {
         if (isset($this->server['HTTP_X_REQUESTED_WITH']) &&
-            $this->server['HTTP_X_REQUESTED_WITH'] == 'XmlHttpRequest')
-        {
+            $this->server['HTTP_X_REQUESTED_WITH'] == 'XmlHttpRequest'
+        ) {
             return true;
         }
 
@@ -59,18 +58,15 @@ class Request
     public function uri()
     {
         $uri = '';
-        if (isset($this->server['REQUEST_URI']))
-        {
+        if (isset($this->server['REQUEST_URI'])) {
             $uri = $this->server['REQUEST_URI'];
         }
 
-        if (substr($uri, 0, 1) == '/')
-        {
+        if (substr($uri, 0, 1) == '/') {
             $uri = substr($uri, 1);
         }
 
-        if (!$this->hasQueryPart($uri) && substr($uri, -1) == '/')
-        {
+        if (!$this->hasQueryPart($uri) && substr($uri, -1) == '/') {
             $uri = substr($uri, 0, -1);
         }
 
@@ -79,15 +75,13 @@ class Request
 
     public function path()
     {
-        if (!$this->hasQueryPart())
-        {
+        if (!$this->hasQueryPart()) {
             return $this->uri();
         }
 
         list($path, $query) = $this->pathAndQuery();
 
-        if (substr($path, -1) == '/')
-        {
+        if (substr($path, -1) == '/') {
             $path = substr($path, 0, -1);
         }
 
@@ -96,8 +90,7 @@ class Request
 
     public function query()
     {
-        if (!$this->hasQueryPart())
-        {
+        if (!$this->hasQueryPart()) {
             return '';
         }
         list($path, $query) = $this->pathAndQuery();
@@ -107,12 +100,9 @@ class Request
     protected function pathAndQuery()
     {
         $parts = explode('?', $this->uri());
-        if (count($parts) == 2)
-        {
+        if (count($parts) == 2) {
             list($path, $query) = $parts;
-        }
-        else
-        {
+        } else {
             $path = array_shift($parts);
             $query = implode('?', $parts);
         }
@@ -128,8 +118,7 @@ class Request
      */
     protected function hasQueryPart($uri = null)
     {
-        if (is_null($uri))
-        {
+        if (is_null($uri)) {
             $uri = $this->uri();
         }
 
@@ -211,7 +200,7 @@ class Request
         return $this->params;
     }
 
-    public function param($name, $default=null)
+    public function param($name, $default = null)
     {
         return isset($this->params[$name]) ? $this->params[$name] : $default;
     }

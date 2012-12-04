@@ -27,8 +27,7 @@ class Bootstrap
     protected function bootstrapMethods()
     {
         $results = array();
-        foreach ($this->methods() as $key => $method)
-        {
+        foreach ($this->methods() as $key => $method) {
             $results[$key] = $this->$method();
         }
         $this->results = $results;
@@ -36,18 +35,15 @@ class Bootstrap
 
     protected function methods()
     {
-        if ($this->methods)
-        {
+        if ($this->methods) {
             return $this->methods;
         }
 
         $this->methods = array();
 
         $methodNames = get_class_methods($this);
-        foreach ($methodNames as $method)
-        {
-            if (strlen($method) > 4 && substr($method, 0, 4) == 'init')
-            {
+        foreach ($methodNames as $method) {
+            if (strlen($method) > 4 && substr($method, 0, 4) == 'init') {
                 $key = strtolower(substr($method, 4));
                 $this->methods[$key] = $method;
             }

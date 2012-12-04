@@ -28,32 +28,25 @@ class Loader
 
     public static function basicLoader($class)
     {
-        if (self::$application && substr($class, 0, 7) == 'Models\\')
-        {
+        if (self::$application && substr($class, 0, 7) == 'Models\\') {
             self::loadApplicationClass($class);
-        }
-        elseif (self::$application && substr($class, 0, 12) == 'Controllers\\')
-        {
+        } elseif (self::$application && substr($class, 0, 12) == 'Controllers\\') {
             self::loadController($class);
-        }
-        else
-        {
+        } else {
             self::loadLibrary($class);
         }
     }
 
     public static function loadModel($class)
     {
-        if (!self::loadApplicationClass($class))
-        {
+        if (!self::loadApplicationClass($class)) {
             throw new Loader\Exception('Model not found');
         }
     }
 
     public static function loadController($class)
     {
-        if (!self::loadApplicationClass($class))
-        {
+        if (!self::loadApplicationClass($class)) {
             throw new Loader\Exception('Controller not found');
         }
     }
@@ -67,11 +60,10 @@ class Loader
         $className = array_pop($classNameParts);
 
         $path = implode(DIRECTORY_SEPARATOR, array_map('strtolower', $classNameParts));
-        $path .= DIRECTORY_SEPARATOR. $className . '.php';
+        $path .= DIRECTORY_SEPARATOR . $className . '.php';
 
 
-        if (file_exists(self::$application->path() . $path))
-        {
+        if (file_exists(self::$application->path() . $path)) {
             include_once self::$application->path() . $path;
             return true;
         }
@@ -84,11 +76,9 @@ class Loader
         $filename = implode(DIRECTORY_SEPARATOR, explode('\\', $class)) . '.php';
         $includePaths = explode(PATH_SEPARATOR, get_include_path());
 
-        foreach ($includePaths as $path)
-        {
+        foreach ($includePaths as $path) {
             $include = $path . DIRECTORY_SEPARATOR . $filename;
-            if (!file_exists($include))
-            {
+            if (!file_exists($include)) {
                 continue;
             }
 

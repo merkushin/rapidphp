@@ -12,27 +12,22 @@ class PostgreSQL extends \Rapid\Db
     protected function dsn()
     {
         $dsn = 'mysql:';
-        if (!empty($this->options['host']))
-        {
+        if (!empty($this->options['host'])) {
             $dsn .= sprintf('host=%s', $this->options['host']);
-            if (!empty($this->options['port']))
-            {
+            if (!empty($this->options['port'])) {
                 $dsn .= sprintf(';port=%d', $this->options['port']);
             }
         }
 
-        if (!empty($this->options['dbname']))
-        {
+        if (!empty($this->options['dbname'])) {
             $dsn .= sprintf(';dbname=%s', $this->options['dbname']);
         }
 
-        if (!empty($this->options['user']))
-        {
+        if (!empty($this->options['user'])) {
             $dsn .= sprintf(';user=%s', $this->options['user']);
         }
 
-        if (!empty($this->options['password']))
-        {
+        if (!empty($this->options['password'])) {
             $dsn .= sprintf(';password=%s', $this->options['password']);
         }
 
@@ -50,8 +45,7 @@ class PostgreSQL extends \Rapid\Db
         $query = 'INSERT INTO %s(%s) VALUES(%s)';
         $fields = array();
         $placeholders = array();
-        foreach ($params as $field => $value)
-        {
+        foreach ($params as $field => $value) {
             $fields[] = $field;
             $placeholders[] = sprintf(':%s', $field);
         }
@@ -71,14 +65,12 @@ class PostgreSQL extends \Rapid\Db
     {
         $query = 'UPDATE %s SET %s';
         $set = array();
-        foreach ($params as $field => $value)
-        {
+        foreach ($params as $field => $value) {
             $set[] = sprintf('%s=:%s', $field, $field);
         }
         $query = sprintf($query, $tablename, implode(', ', $set));
 
-        if (count($where))
-        {
+        if (count($where)) {
             list($whereClause, $whereParams) = $this->prepareWhere($where);
             $query .= $whereClause;
             $params = array_merge($params, $whereParams);
@@ -97,8 +89,7 @@ class PostgreSQL extends \Rapid\Db
     {
         $query = sprintf('DELETE FROM %s', $tablename);
         $params = array();
-        if (count($where))
-        {
+        if (count($where)) {
             list($whereClause, $whereParams) = $this->prepareWhere($where);
             $query .= $whereClause;
             $params = array_merge($params, $whereParams);
@@ -117,14 +108,10 @@ class PostgreSQL extends \Rapid\Db
         $params = array();
 
         $clauseStatements = array();
-        foreach ($where as $field => $value)
-        {
-            if (is_numeric($field))
-            {
+        foreach ($where as $field => $value) {
+            if (is_numeric($field)) {
                 $clauseStatements[] = $value;
-            }
-            else
-            {
+            } else {
                 /**
                  * @todo build query with IN () if $value is array
                  */

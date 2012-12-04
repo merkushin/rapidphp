@@ -20,16 +20,11 @@ class Config
      */
     public function __construct($options = array())
     {
-        if (is_string($options))
-        {
+        if (is_string($options)) {
             $options = $this->loadOptionsFromFile($options);
-        }
-        elseif ($options instanceof \Rapid\Config)
-        {
+        } elseif ($options instanceof \Rapid\Config) {
             $options = $options->options();
-        }
-        elseif (!is_array($options))
-        {
+        } elseif (!is_array($options)) {
             throw new \Rapid\Config\Exception('Unknown type of options data');
         }
 
@@ -48,8 +43,7 @@ class Config
 
     public function merge($options)
     {
-        if (!($options instanceof \Rapid\Config))
-        {
+        if (!($options instanceof \Rapid\Config)) {
             $options = new \Rapid\Config($options);
         }
 
@@ -58,13 +52,11 @@ class Config
 
     public function get($key)
     {
-        if (!isset($this->options[$key]))
-        {
+        if (!isset($this->options[$key])) {
             return null;
         }
 
-        if (!is_array($this->options[$key]))
-        {
+        if (!is_array($this->options[$key])) {
             return $this->options[$key];
         }
 
@@ -78,26 +70,19 @@ class Config
 
     protected function loadOptionsFromFile($filename)
     {
-        if (!file_exists($filename))
-        {
+        if (!file_exists($filename)) {
             throw new \Rapid\Config\Exception('Config file doesn\'t exist');
         }
 
-        if (preg_match('/\.php$/i', $filename))
-        {
+        if (preg_match('/\.php$/i', $filename)) {
             $ret = $this->loadPhpArray($filename);
-        }
-        elseif (preg_match('/\.ini/i', $filename))
-        {
+        } elseif (preg_match('/\.ini/i', $filename)) {
             $ret = $this->loadIniFile($filename);
-        }
-        else
-        {
+        } else {
             throw new \Rapid\Config\Exception\Unsupported('Unknown config file type');
         }
 
-        if (!is_array($ret))
-        {
+        if (!is_array($ret)) {
             throw new \Rapid\Config\Exception('Config file contains incorrect data');
         }
 

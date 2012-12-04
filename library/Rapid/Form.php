@@ -33,8 +33,7 @@ class Form
     {
         $element->setAttribute('name', $this->elementName($name));
         $element->setAttribute('id', $this->elementId($name));
-        if ($this->model && $this->model->property($name))
-        {
+        if ($this->model && $this->model->property($name)) {
             $element->setValue($this->model->property($name));
         }
         $this->elements[$name] = $element;
@@ -87,10 +86,8 @@ class Form
      */
     public function populate($values)
     {
-        foreach ($values as $name => $value)
-        {
-            if ($element = $this->element($name))
-            {
+        foreach ($values as $name => $value) {
+            if ($element = $this->element($name)) {
                 $element->setValue($value);
             }
         }
@@ -106,8 +103,7 @@ class Form
      */
     public function render($type = 'li')
     {
-        switch ($type)
-        {
+        switch ($type) {
             case 'p':
                 $html = $this->asP();
                 break;
@@ -132,8 +128,7 @@ class Form
         /**
          * @var \Rapid\Form\ElementInterface $element
          */
-        foreach ($this->elements as $element)
-        {
+        foreach ($this->elements as $element) {
             $html .= sprintf('<p>%s %s</p>' . PHP_EOL, $element->label(), $element->render());
         }
         return $html;
@@ -150,8 +145,7 @@ class Form
         /**
          * @var \Rapid\Form\ElementInterface $element
          */
-        foreach ($this->elements as $element)
-        {
+        foreach ($this->elements as $element) {
             $html .= sprintf('<li>%s %s</li>' . PHP_EOL, $element->label(), $element->render());
         }
         return $html;
@@ -168,8 +162,7 @@ class Form
         /**
          * @var \Rapid\Form\ElementInterface $element
          */
-        foreach ($this->elements as $element)
-        {
+        foreach ($this->elements as $element) {
             $html .= sprintf('<tr><td>%s</td><td>%s</td></tr>' . PHP_EOL, $element->label(), $element->render());
         }
         return $html;

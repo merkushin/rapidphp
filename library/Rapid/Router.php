@@ -50,8 +50,7 @@ class Router
      */
     public function route()
     {
-        if (!$this->processCustomRoutes())
-        {
+        if (!$this->processCustomRoutes()) {
             $this->processPath();
         }
         $this->processQuery();
@@ -64,10 +63,8 @@ class Router
         /**
          * @var \Rapid\Router\RouteInterface $route
          */
-        foreach ($this->customRoutes as $route)
-        {
-            if ($route->pass($this->request))
-            {
+        foreach ($this->customRoutes as $route) {
+            if ($route->pass($this->request)) {
                 return true;
             }
         }
@@ -88,39 +85,31 @@ class Router
 
         $paramsKey = '';
 
-        foreach ($parts as $key => $part)
-        {
-            if (!$controller && $this->application->hasModule($module . $part . '/'))
-            {
+        foreach ($parts as $key => $part) {
+            if (!$controller && $this->application->hasModule($module . $part . '/')) {
                 $module .= $part . '/';
                 continue;
             }
 
-            if (!$controller)
-            {
+            if (!$controller) {
                 $controller = $part;
                 continue;
             }
 
-            if (!$action)
-            {
+            if (!$action) {
                 $action = $part;
                 continue;
             }
 
-            if ($partsMaxIndex > $key && !$paramsKey)
-            {
+            if ($partsMaxIndex > $key && !$paramsKey) {
                 $paramsKey = $part;
                 continue;
             }
 
-            if ($paramsKey)
-            {
+            if ($paramsKey) {
                 $this->request->setParam($paramsKey, $part);
                 $paramsKey = '';
-            }
-            else
-            {
+            } else {
                 $this->request->setParam($part, 1);
             }
         }
@@ -133,20 +122,15 @@ class Router
 
     protected function processQuery()
     {
-        if (!$this->request->query())
-        {
+        if (!$this->request->query()) {
             return;
         }
 
         $paramsMaxIndex = count($this->request->params());
-        foreach(explode('&', $this->request->query()) as $keyValuePair)
-        {
-            if (strpos($keyValuePair, '=') !== false)
-            {
+        foreach (explode('&', $this->request->query()) as $keyValuePair) {
+            if (strpos($keyValuePair, '=') !== false) {
                 list($key, $value) = explode('=', $keyValuePair);
-            }
-            else
-            {
+            } else {
                 $key = $paramsMaxIndex++;
                 $value = $keyValuePair;
             }

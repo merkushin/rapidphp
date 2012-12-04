@@ -23,16 +23,14 @@ abstract class Db
      */
     public static function factory($options = array(), $instanceName = '')
     {
-        if (is_string($options) && strlen($options))
-        {
+        if (is_string($options) && strlen($options)) {
             $options = self::parseString($options);
         }
 
         $instanceName = $instanceName ? $instanceName : 'default';
 
         $instance = null;
-        switch ($options['driver'])
-        {
+        switch ($options['driver']) {
             case 'mysql' :
                 $instance = new \Rapid\Db\MySQL($options);
                 break;
@@ -64,8 +62,7 @@ abstract class Db
 
     public function __construct($options)
     {
-        if (!count($options))
-        {
+        if (!count($options)) {
             throw new \Rapid\Db\Exception('No options given');
         }
 
@@ -74,10 +71,9 @@ abstract class Db
         $this->driver = new \PDO($dsn, $options['user'], $options['password']);
     }
 
-    protected  static function parseString($options)
+    protected static function parseString($options)
     {
-        if (strpos($options, 'sqlite') !== false)
-        {
+        if (strpos($options, 'sqlite') !== false) {
             return self::parseSQLiteString($options);
         }
 
@@ -86,8 +82,7 @@ abstract class Db
         $ret = array();
         $ret['driver'] = $driver;
         $configStrings = explode(';', $config);
-        foreach ($configStrings as $keyValueString)
-        {
+        foreach ($configStrings as $keyValueString) {
             list($optionName, $optionValue) = explode('=', $keyValueString);
             $ret[$optionName] = $optionValue;
         }
@@ -140,8 +135,7 @@ abstract class Db
      */
     public function query($query, $params = array())
     {
-        if (count($params))
-        {
+        if (count($params)) {
             $stmt = $this->executePreparedStatement($query, $params);
             return $stmt->rowCount();
         }
@@ -191,15 +185,13 @@ abstract class Db
         $stmt = $this->executePreparedStatement($query, $params);
         $columnCount = $stmt->columnCount();
 
-        if (!$columnCount)
-        {
+        if (!$columnCount) {
             return null;
         }
 
         $column = $column >= 0 && $column <= $columnCount - 1 ? (int)$column : 0;
         $ret = array();
-        while (($value = $stmt->fetchColumn($column)) !== false)
-        {
+        while (($value = $stmt->fetchColumn($column)) !== false) {
             $ret[] = $value;
         }
         return $ret;
@@ -230,8 +222,7 @@ abstract class Db
     protected function executePreparedStatement($query, $params)
     {
         $stmt = $this->driver->prepare($query);
-        if (!$stmt->execute($params))
-        {
+        if (!$stmt->execute($params)) {
             throw new \Rapid\Db\Exception(
                 'Error execution query: ' . implode(PHP_EOL, $stmt->errorInfo())
             );

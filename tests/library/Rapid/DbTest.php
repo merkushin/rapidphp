@@ -45,8 +45,7 @@ class DbTest extends PHPUnit_Framework_TestCase
     {
         $this->createTestTable(false);
         $db = \Rapid\Db::get();
-        for ($i = 1; $i <= 10; $i++)
-        {
+        for ($i = 1; $i <= 10; $i++) {
             $q = 'INSERT INTO my_table (id, string) VALUES(:id, :string)';
             $params = array(
                 'id' => $i,
@@ -66,8 +65,7 @@ class DbTest extends PHPUnit_Framework_TestCase
         $this->createTestTable();
         $db = \Rapid\Db::get();
         $expectedRet = array();
-        for ($i = 1; $i <= 10; $i++)
-        {
+        for ($i = 1; $i <= 10; $i++) {
             $expectedRet[] = array(
                 'id' => $i,
                 'string' => 'string-' . $i,
@@ -99,8 +97,7 @@ class DbTest extends PHPUnit_Framework_TestCase
         $db = \Rapid\Db::get();
 
         $expectedRet = array();
-        for ($i = 1; $i <= 10; $i++)
-        {
+        for ($i = 1; $i <= 10; $i++) {
             $expectedRet[] = $i;
         }
 
@@ -240,8 +237,7 @@ class DbTest extends PHPUnit_Framework_TestCase
     public function tearDown()
     {
         $db = \Rapid\Db::get();
-        if ($db instanceof \Rapid\Db)
-        {
+        if ($db instanceof \Rapid\Db) {
             $db->query('DROP TABLE my_table');
         }
     }
@@ -251,10 +247,8 @@ class DbTest extends PHPUnit_Framework_TestCase
         $db = \Rapid\Db::get();
         $query = 'CREATE TABLE my_table (id int, string varchar(255))';
         $db->query($query);
-        if ($withRows)
-        {
-            for ($i = 1; $i <= 10; $i++)
-            {
+        if ($withRows) {
+            for ($i = 1; $i <= 10; $i++) {
                 $q = 'INSERT INTO my_table (id, string) VALUES(:id, :string)';
                 $params = array(
                     'id' => $i,

@@ -12,26 +12,20 @@ class MySQL extends \Rapid\Db
     protected function dsn()
     {
         $dsn = 'mysql:';
-        if (!empty($this->options['host']))
-        {
+        if (!empty($this->options['host'])) {
             $dsn .= sprintf('host=%s', $this->options['host']);
-            if (!empty($this->options['port']))
-            {
+            if (!empty($this->options['port'])) {
                 $dsn .= sprintf(';port=%d', $this->options['port']);
             }
-        }
-        elseif (!empty($this->options['unix_socket']))
-        {
+        } elseif (!empty($this->options['unix_socket'])) {
             $dsn .= sprintf('unix_socket=%s', $this->options['unix_socket']);
         }
 
-        if (!empty($this->options['dbname']))
-        {
+        if (!empty($this->options['dbname'])) {
             $dsn .= sprintf(';dbname=%s', $this->options['dbname']);
         }
 
-        if (!empty($this->options['charset']))
-        {
+        if (!empty($this->options['charset'])) {
             $dsn .= sprintf(';charset=%s', $this->options['charset']);
         }
 
@@ -50,8 +44,7 @@ class MySQL extends \Rapid\Db
         $tablename = sprintf('`%s`', $tablename);
         $fields = array();
         $placeholders = array();
-        foreach ($params as $field => $value)
-        {
+        foreach ($params as $field => $value) {
             $fields[] = sprintf('`%s`', $field);
             $placeholders[] = sprintf(':%s', $field);
         }
@@ -71,14 +64,12 @@ class MySQL extends \Rapid\Db
     {
         $query = 'UPDATE %s SET %s';
         $set = array();
-        foreach ($params as $field => $value)
-        {
+        foreach ($params as $field => $value) {
             $set[] = sprintf('`%s`=:%s', $field, $field);
         }
         $query = sprintf($query, $tablename, implode(', ', $set));
 
-        if (count($where))
-        {
+        if (count($where)) {
             list($whereClause, $whereParams) = $this->prepareWhere($where);
             $query .= $whereClause;
             $params = array_merge($params, $whereParams);
@@ -97,8 +88,7 @@ class MySQL extends \Rapid\Db
     {
         $query = sprintf('DELETE FROM %s', $tablename);
         $params = array();
-        if (count($where))
-        {
+        if (count($where)) {
             list($whereClause, $whereParams) = $this->prepareWhere($where);
             $query .= $whereClause;
             $params = array_merge($params, $whereParams);
@@ -117,14 +107,10 @@ class MySQL extends \Rapid\Db
         $params = array();
 
         $clauseStatements = array();
-        foreach ($where as $field => $value)
-        {
-            if (is_numeric($field))
-            {
+        foreach ($where as $field => $value) {
+            if (is_numeric($field)) {
                 $clauseStatements[] = $value;
-            }
-            else
-            {
+            } else {
                 /**
                  * @todo build query with IN () if $value is array
                  */
