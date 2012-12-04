@@ -7,7 +7,7 @@
 
 namespace Rapid\Form;
 
-class Text extends \Rapid\Form\ElementInterface
+class Text extends \Rapid\Form\AbstractElement
 {
     public function __construct($label = '')
     {

@@ -25,11 +25,11 @@ class Form
      * Add element to the form
      *
      * @param string $name
-     * @param Form\ElementInterface $element
+     * @param \Rapid\Form\AbstractElement $element
      *
      * @return Form
      */
-    public function addElement($name, \Rapid\Form\ElementInterface $element)
+    public function addElement($name, \Rapid\Form\AbstractElement $element)
     {
         $element->setAttribute('name', $this->elementName($name));
         $element->setAttribute('id', $this->elementId($name));
@@ -70,7 +70,7 @@ class Form
     /**
      * @param string $name
      *
-     * @return \Rapid\Form\ElementInterface
+     * @return \Rapid\Form\AbstractElement
      */
     public function element($name)
     {
@@ -126,7 +126,7 @@ class Form
     {
         $html = '';
         /**
-         * @var \Rapid\Form\ElementInterface $element
+         * @var \Rapid\Form\AbstractElement $element
          */
         foreach ($this->elements as $element) {
             $html .= sprintf('<p>%s %s</p>' . PHP_EOL, $element->label(), $element->render());
@@ -143,7 +143,7 @@ class Form
     {
         $html = '';
         /**
-         * @var \Rapid\Form\ElementInterface $element
+         * @var \Rapid\Form\AbstractElement $element
          */
         foreach ($this->elements as $element) {
             $html .= sprintf('<li>%s %s</li>' . PHP_EOL, $element->label(), $element->render());
@@ -160,7 +160,7 @@ class Form
     {
         $html = '';
         /**
-         * @var \Rapid\Form\ElementInterface $element
+         * @var \Rapid\Form\AbstractElement $element
          */
         foreach ($this->elements as $element) {
             $html .= sprintf('<tr><td>%s</td><td>%s</td></tr>' . PHP_EOL, $element->label(), $element->render());

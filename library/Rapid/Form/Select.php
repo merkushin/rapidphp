@@ -7,7 +7,7 @@
 
 namespace Rapid\Form;
 
-class Select extends ElementInterface
+class Select extends AbstractElement
 {
     protected $options = array();
 

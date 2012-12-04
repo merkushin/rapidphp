@@ -7,7 +7,7 @@
 
 namespace Rapid\Form;
 
-class Input extends ElementInterface
+class Input extends AbstractElement
 {
     protected $type;
 

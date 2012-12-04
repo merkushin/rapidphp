@@ -7,7 +7,7 @@
 
 namespace Rapid\Form;
 
-abstract class ElementInterface
+abstract class AbstractElement
 {
     protected $label;
     protected $value;
