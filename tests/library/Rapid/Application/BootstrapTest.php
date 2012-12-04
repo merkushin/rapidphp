@@ -1,8 +1,6 @@
 <?php
 
-use \Rapid\Application\Bootstrap;
-
-class BootstrapForTest extends Bootstrap
+class BootstrapForTest extends \Rapid\Application\Bootstrap
 {
     public function initInfo()
     {
@@ -22,7 +20,7 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
 
     public function testCreate()
     {
-        $bootstrap = new Bootstrap($this->application);
+        $bootstrap = new \Rapid\Application\Bootstrap($this->application);
         $this->assertInstanceOf('\Rapid\Application\Bootstrap', $bootstrap);
     }
 
@@ -31,7 +29,7 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
      */
     public function testBootstrap()
     {
-        $bootstrap = new Bootstrap($this->application);
+        $bootstrap = new \Rapid\Application\Bootstrap($this->application);
         $result = $bootstrap->bootstrap();
         $this->assertInstanceOf('\Rapid\Application\Bootstrap', $result);
     }
@@ -41,7 +39,7 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
      */
     public function testResults()
     {
-        $bootstrap = new Bootstrap($this->application);
+        $bootstrap = new \Rapid\Application\Bootstrap($this->application);
         $this->assertEquals(array(), $bootstrap->results());
         $bootstrap->bootstrap();
         $this->assertEquals(array(), $bootstrap->results());

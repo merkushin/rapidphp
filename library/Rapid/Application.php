@@ -145,7 +145,7 @@ class Application
     {
         $bootstrapPath = $this->applicationPath() . 'Bootstrap.php';
         if (file_exists($bootstrapPath)) {
-            include $bootstrapPath;
+            include_once $bootstrapPath;
             $this->bootstrap = new \Bootstrap($this);
         }
     }
