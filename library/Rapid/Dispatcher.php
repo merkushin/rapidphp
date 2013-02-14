@@ -147,7 +147,7 @@ class Dispatcher
     {
         if ($module) {
             $module = str_replace('-', '_', $module);
-            $module = substr($module, -1) == '/' ? substr($module, 0, 1) : $module;
+            $module = substr($module, -1) == '/' ? substr($module, 0, -1) : $module;
         }
         $controller = str_replace('-', '_', $controller);
         $action = str_replace('-', '_', $action);

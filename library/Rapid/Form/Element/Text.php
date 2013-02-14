@@ -5,9 +5,9 @@
  * @author Dmitry Merkushin <merkushin@gmail.com>
  */
 
-namespace Rapid\Form;
+namespace Rapid\Form\Element;
 
-class Text extends \Rapid\Form\AbstractElement
+class Text extends \Rapid\Form\Element
 {
     public function __construct($label = '')
     {

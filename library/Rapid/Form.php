@@ -14,7 +14,17 @@ class Form
      */
     protected $model;
 
+    /**
+     * @var array of \Rapid\Form\Element
+     */
     protected $elements = array();
+
+    /**
+     * @var array of \Rapid\Form\Validator
+     */
+    protected $validators = array();
+
+    protected $errors =  array();
 
     public function __construct($model = null)
     {
@@ -22,14 +32,52 @@ class Form
     }
 
     /**
-     * Add element to the form
+     * Add validator for element
      *
-     * @param string $name
-     * @param \Rapid\Form\AbstractElement $element
+     * @param string $name Element name
+     * @param Form\Validator $validator
      *
      * @return Form
      */
-    public function addElement($name, \Rapid\Form\AbstractElement $element)
+    public function addValidator($name, \Rapid\Form\Validator $validator)
+    {
+        $validator->setModel($this->model);
+        $validator->setElementName($name);
+        $this->validators[$name] = $validator;
+        return $this;
+    }
+
+    /**
+     * Check if data is valid
+     *
+     * @param array $data
+     *
+     * @return bool
+     */
+    public function isValid(array $data)
+    {
+        $ret = true;
+        /**
+         * @var \Rapid\Form\Validator $validator
+         */
+        foreach ($this->validators as $name => $validator) {
+            if (!$validator->isValid($data)) {
+                $this->errors[$name] = $validator->getError();
+                $ret = false;
+            }
+        }
+        return $ret;
+    }
+
+    /**
+     * Add element to the form
+     *
+     * @param string $name
+     * @param \Rapid\Form\Element $element
+     *
+     * @return Form
+     */
+    public function addElement($name, \Rapid\Form\Element $element)
     {
         $element->setAttribute('name', $this->elementName($name));
         $element->setAttribute('id', $this->elementId($name));
@@ -37,7 +85,6 @@ class Form
             $element->setValue($this->model->property($name));
         }
         $this->elements[$name] = $element;
-
         return $this;
     }
 
@@ -70,7 +117,7 @@ class Form
     /**
      * @param string $name
      *
-     * @return \Rapid\Form\AbstractElement
+     * @return \Rapid\Form\Element
      */
     public function element($name)
     {
@@ -113,7 +160,6 @@ class Form
             default:
                 $html = $this->asLi();
         }
-
         return $html;
     }
 
@@ -126,7 +172,7 @@ class Form
     {
         $html = '';
         /**
-         * @var \Rapid\Form\AbstractElement $element
+         * @var \Rapid\Form\Element $element
          */
         foreach ($this->elements as $element) {
             $html .= sprintf('<p>%s %s</p>' . PHP_EOL, $element->label(), $element->render());
@@ -143,7 +189,7 @@ class Form
     {
         $html = '';
         /**
-         * @var \Rapid\Form\AbstractElement $element
+         * @var \Rapid\Form\Element $element
          */
         foreach ($this->elements as $element) {
             $html .= sprintf('<li>%s %s</li>' . PHP_EOL, $element->label(), $element->render());
@@ -160,11 +206,37 @@ class Form
     {
         $html = '';
         /**
-         * @var \Rapid\Form\AbstractElement $element
+         * @var \Rapid\Form\Element $element
          */
         foreach ($this->elements as $element) {
             $html .= sprintf('<tr><td>%s</td><td>%s</td></tr>' . PHP_EOL, $element->label(), $element->render());
         }
         return $html;
+    }
+
+    public function addError($error)
+    {
+        $this->errors[] = $error;
+        return $this;
+    }
+
+    public function addErrors(array $errors)
+    {
+        $this->errors = array_merge(
+            $this->errors,
+            $errors
+        );
+        return $this;
+    }
+
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    public function clearErrors()
+    {
+        $this->errors = array();
+        return $this;
     }
 }

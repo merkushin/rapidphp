@@ -5,9 +5,9 @@
  * @author Dmitry Merkushin <merkushin@gmail.com>
  */
 
-namespace Rapid\Form;
+namespace Rapid\Form\Element;
 
-class Select extends AbstractElement
+class Select extends \Rapid\Form\Element
 {
     protected $options = array();
 
