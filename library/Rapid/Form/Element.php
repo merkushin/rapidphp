@@ -12,6 +12,8 @@ abstract class Element
     protected $label;
     protected $value;
     protected $attributes = array();
+    protected $errors = array();
+    protected $validators = array();
 
     /**
      * @return string
@@ -49,6 +51,12 @@ abstract class Element
         return implode(' ', $pairs);
     }
 
+    public function setLabel($label)
+    {
+        $this->label = $label;
+        return $this;
+    }
+
     public function label()
     {
         if (!$this->label) {
@@ -74,5 +82,39 @@ abstract class Element
         return isset($this->attributes['id'])
             ? $this->attributes['id']
             : '';
+    }
+
+    public function setErrors(array $messages)
+    {
+        $this->errors = $messages;
+        return $this;
+    }
+
+    public function addError($message)
+    {
+        $this->errors[] = $message;
+        return $this;
+    }
+
+    public function errors()
+    {
+        return $this->errors;
+    }
+
+    public function setValidators(array $validators)
+    {
+        $this->validators = $validators;
+        return $this;
+    }
+
+    public function addValidator(\Rapid\Form\Validator $validator)
+    {
+        $this->validators[] = $validator;
+        return $this;
+    }
+
+    public function validators()
+    {
+        return $this->validators;
     }
 }

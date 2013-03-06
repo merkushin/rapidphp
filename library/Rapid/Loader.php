@@ -7,7 +7,7 @@
 
 namespace Rapid;
 
-require_once 'Rapid/Loader/Exception.php';
+require_once __DIR__ . '/Loader/Exception.php';
 
 class Loader
 {
@@ -85,7 +85,5 @@ class Loader
             include_once $include;
             return;
         }
-
-        throw new \Rapid\Loader\Exception('Library class not found: ' . $filename);
     }
 }

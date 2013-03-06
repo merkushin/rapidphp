@@ -6,7 +6,16 @@ class DbTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-
+        if (!\Rapid\Db::get()) {
+            $options = array(
+                'driver' => 'mysql',
+                'host' => 'localhost',
+                'user' => 'root',
+                'password' => '',
+                'dbname' => 'test',
+            );
+            $mysql = \Rapid\Db::factory($options);
+        }
     }
 
     public function testFactory()

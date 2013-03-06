@@ -19,13 +19,6 @@ class Form
      */
     protected $elements = array();
 
-    /**
-     * @var array of \Rapid\Form\Validator
-     */
-    protected $validators = array();
-
-    protected $errors =  array();
-
     public function __construct($model = null)
     {
         $this->model = $model;
@@ -34,16 +27,21 @@ class Form
     /**
      * Add validator for element
      *
-     * @param string $name Element name
+     * @param string $name
      * @param Form\Validator $validator
      *
      * @return Form
+     * @throws Exception
      */
     public function addValidator($name, \Rapid\Form\Validator $validator)
     {
+        $element = $this->element($name);
+        if ($element) {
+            throw new \Rapid\Exception('Form element not found');
+        }
         $validator->setModel($this->model);
         $validator->setElementName($name);
-        $this->validators[$name] = $validator;
+        $element->addValidator($validator);
         return $this;
     }
 
@@ -57,15 +55,22 @@ class Form
     public function isValid(array $data)
     {
         $ret = true;
+        $this->clearErrors();
         /**
-         * @var \Rapid\Form\Validator $validator
+         * @var \Rapid\Form\Element $element
          */
-        foreach ($this->validators as $name => $validator) {
-            if (!$validator->isValid($data)) {
-                $this->errors[$name] = $validator->getError();
-                $ret = false;
+        foreach ($this->elements as $element) {
+            /**
+             * @var \Rapid\Form\Validator $validator
+             */
+            foreach ($element->validators() as $validator) {
+                if (!$validator->isValid($data)) {
+                    $element->addError($validator->getError());
+                    $ret = false;
+                }
             }
         }
+
         return $ret;
     }
 
@@ -214,29 +219,26 @@ class Form
         return $html;
     }
 
-    public function addError($error)
-    {
-        $this->errors[] = $error;
-        return $this;
-    }
-
-    public function addErrors(array $errors)
-    {
-        $this->errors = array_merge(
-            $this->errors,
-            $errors
-        );
-        return $this;
-    }
-
     public function getErrors()
     {
-        return $this->errors;
+        $errors = array();
+        /**
+         * @var \Rapid\Form\Element $element
+         */
+        foreach ($this->elements as $name => $element) {
+            $errors[$name] = $element->errors();
+        }
+        return $errors;
     }
 
     public function clearErrors()
     {
-        $this->errors = array();
+        /**
+         * @var \Rapid\Form\Element $element
+         */
+        foreach ($this->elements as $element) {
+            $element->setErrors(array());
+        }
         return $this;
     }
 }
