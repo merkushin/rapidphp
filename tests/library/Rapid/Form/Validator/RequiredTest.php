@@ -25,7 +25,10 @@ class RequiredTest extends PHPUnit_Framework_TestCase
 
     public function testIsValidWithModel()
     {
-        $model = new \Rapid\Model();
+        $model = $this->getMockBuilder('Rapid\Model')->getMock();
+        $model->expects($this->atLeastOnce())
+            ->method('name')
+            ->will($this->returnValue('model'));
         $validator = new Validator\Required();
         $validator->setModel($model);
         $validator->setElementName('name');

@@ -9,7 +9,7 @@ class DataMapperTest extends PHPUnit_Framework_TestCase
         $options = array(
             'driver' => 'mysql',
             'host' => 'localhost',
-            'user' => 'root',
+            'user' => 'test',
             'password' => '',
             'dbname' => 'test',
         );

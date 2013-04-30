@@ -11,9 +11,13 @@ class DispatcherText extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $request = new \Rapid\Request();
-        $request->setController('index');
-        $request->setAction('index');
+        $request = $this->getMockBuilder('Rapid\Request')->getMock();
+        $request->expects($this->any())
+            ->method('controller')
+            ->will($this->returnValue('index'));
+        $request->expects($this->any())
+            ->method('action')
+            ->will($this->returnValue('index'));
 
         $app = new \Rapid\Application(__DIR__ . '/../../../application/', 'development');
         $app->addModule('admin/');

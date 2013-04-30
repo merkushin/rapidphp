@@ -22,7 +22,8 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $_SERVER = array(
             'REQUEST_URI' => '/index/index/param1/1/?param2=2',
         );
-        $this->request = new \Rapid\Request();
+
+        $this->request = $this->getMockRequest();
 
         $this->application = new \Rapid\Application(__DIR__ . '/../../../application/', 'development');
         $this->application->addModule('admin/');
@@ -58,7 +59,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $_SERVER = array(
             'REQUEST_URI' => '/my-address/?param1=2',
         );
-        $request = new \Rapid\Request();
+        $request = $this->getMockRequest();//new \Rapid\Request();
 
         $application = new \Rapid\Application(__DIR__ . '/../../../application/', 'development');
 
@@ -71,5 +72,44 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('index', $request->controller(), 'Incorrect Controller');
         $this->assertEquals('', $request->module(), 'Incorrect Module');
         $this->assertEquals(2, $request->param('param1'));
+    }
+
+    protected function getMockRequest()
+    {
+        $request = $this->getMockBuilder('Rapid\Request')->getMock();
+        $request->expects($this->any())
+            ->method('setModule')
+            ->will($this->returnValue($request));
+        $request->expects($this->any())
+            ->method('module')
+            ->will($this->returnValue(''));
+        $request->expects($this->any())
+            ->method('setController')
+            ->with('index')
+            ->will($this->returnValue($request));
+        $request->expects($this->any())
+            ->method('controller')
+            ->will($this->returnValue('index'));
+        $request->expects($this->any())
+            ->method('setAction')
+            ->with('index')
+            ->will($this->returnValue($request));
+        $request->expects($this->any())
+            ->method('action')
+            ->will($this->returnValue('index'));
+        $request->expects($this->any())
+            ->method('setParam');
+        $request->expects($this->any())
+            ->method('params')
+            ->will($this->returnValue(array(
+                'param1' => 1,
+                'param2' => 2,
+            )));
+        $request->expects($this->any())
+            ->method('param')
+            ->with('param1')
+            ->will($this->returnValue(2));
+
+        return $request;
     }
 }
