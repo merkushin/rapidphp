@@ -62,12 +62,10 @@ class Request
             $uri = $this->server['REQUEST_URI'];
         }
 
-        if (substr($uri, 0, 1) == '/') {
-            $uri = substr($uri, 1);
-        }
+        $uri = ltrim($uri, '/');
 
-        if (!$this->hasQueryPart($uri) && substr($uri, -1) == '/') {
-            $uri = substr($uri, 0, -1);
+        if (!$this->hasQueryPart($uri)) {
+            $uri = rtrim($uri, '/');
         }
 
         return $uri;
@@ -81,9 +79,7 @@ class Request
 
         list($path, $query) = $this->pathAndQuery();
 
-        if (substr($path, -1) == '/') {
-            $path = substr($path, 0, -1);
-        }
+        trim($path, '/');
 
         return $path;
     }
