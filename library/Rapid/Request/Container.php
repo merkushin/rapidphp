@@ -1,7 +1,7 @@
 <?php
 namespace Rapid\Request;
 
-class Container
+class Container implements \ArrayAccess
 {
     private $container = array();
 
@@ -16,5 +16,28 @@ class Container
             return $this->container[$key];
         }
         return $default;
+    }
+
+    public function offsetExists($offset)
+    {
+        return isset($this->container[$offset]);
+    }
+
+
+    public function offsetGet($offset)
+    {
+        return isset($this->container[$offset])
+            ? $this->container[$offset]
+            : null;
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $this->container[$offset] = $value;
+    }
+
+    public function offsetUnset($offset)
+    {
+        unset($this->container[$offset]);
     }
 }
