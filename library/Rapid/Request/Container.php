@@ -40,4 +40,9 @@ class Container implements \ArrayAccess
     {
         unset($this->container[$offset]);
     }
+
+    public function toArray()
+    {
+        return $this->container;
+    }
 }

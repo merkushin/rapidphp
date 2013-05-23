@@ -7,6 +7,8 @@
 
 namespace Rapid;
 
+use Rapid\Request\Container;
+
 class Request
 {
     protected $module;
@@ -22,12 +24,12 @@ class Request
 
     public function __construct()
     {
-        $this->post = $_POST;
-        $this->get = $_GET;
-        $this->request = $_REQUEST;
-        $this->server = $_SERVER;
-        $this->cookie = $_COOKIE;
-        $this->files = $_FILES;
+        $this->post = new Container($_POST);
+        $this->get = new Container($_GET);
+        $this->request = new Container($_REQUEST);
+        $this->server = new Container($_SERVER);
+        $this->cookie = new Container($_COOKIE);
+        $this->files = new Container($_FILES);
     }
 
     public function isPost()
