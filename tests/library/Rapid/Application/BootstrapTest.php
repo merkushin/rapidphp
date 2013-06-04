@@ -14,8 +14,9 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $path = __DIR__ . '/../../../../application/';
-        $this->application = new \Rapid\Application($path, 'development');
+        $this->application = $this->getMockBuilder('Rapid\Application')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     public function testCreate()

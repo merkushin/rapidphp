@@ -83,7 +83,9 @@ class Loader
             }
 
             include_once $include;
-            return;
+            return true;
         }
+
+        return false;
     }
 }

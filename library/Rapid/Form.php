@@ -219,14 +219,17 @@ class Form
         return $html;
     }
 
-    public function getErrors()
+    public function errors()
     {
         $errors = array();
         /**
          * @var \Rapid\Form\Element $element
          */
         foreach ($this->elements as $name => $element) {
-            $errors[$name] = $element->errors();
+            $elementErrors = $element->errors();
+            if ($elementErrors) {
+                $errors[$name] = $elementErrors;
+            }
         }
         return $errors;
     }

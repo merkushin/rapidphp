@@ -17,7 +17,7 @@ class RouteTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('', $request->module());
     }
 
-    public function testPassWithModult()
+    public function testPassWithModule()
     {
         $route = new \Rapid\Router\Route(':module/:controller/:action/:gogo');
 

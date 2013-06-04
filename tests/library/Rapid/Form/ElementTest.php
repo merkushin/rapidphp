@@ -65,7 +65,7 @@ class ElementTest extends PHPUnit_Framework_TestCase
 
     public function testSetValidators()
     {
-        $validator = new \Rapid\Form\Validator\Required();
+        $validator = $this->getMockBuilder('Rapid\Form\Validator\Required')->getMock();
         $this->assertEquals(array(), $this->element->validators());
         $validators = array();
         $this->element->setValidators($validators);

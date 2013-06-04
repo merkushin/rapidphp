@@ -11,9 +11,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $request = new \Rapid\Request();
-        $request->setController('index');
-        $request->setAction('index');
+        $request = $this->getMockBuilder('Rapid\Request')->getMock();
 
         $app = new \Rapid\Application(__DIR__ . '/../../../application/', 'development');
         $app->addModule('admin/');

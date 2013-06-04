@@ -17,12 +17,9 @@ class LoaderTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Rapid\Application', $this->application);
     }
 
-    /**
-     * @expectedException \Rapid\Loader\Exception
-     */
     public function testErrorLoadLibrary()
     {
-        \Rapid\Loader::loadLibrary('Rapid\Unknown');
+        $this->assertFalse(\Rapid\Loader::loadLibrary('Rapid\Unknown')) ;
     }
 
     public function testSuccessLoadLibrary()

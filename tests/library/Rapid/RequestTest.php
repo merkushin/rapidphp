@@ -23,17 +23,39 @@ class RequestTest extends PHPUnit_Framework_TestCase
     {
         $request = $this->request;
 
-        $this->assertEquals($request->post(), $_POST);
-        $this->assertEquals($request->get(), $_GET);
-        $this->assertEquals($request->request(), $_REQUEST);
-        $this->assertEquals($request->cookie(), $_COOKIE);
-        $this->assertEquals($request->files(), $_FILES);
-        $this->assertEquals($request->server(), $_SERVER);
+        $this->assertInstanceOf('Rapid\Request\Container', $request->post());
+        $this->assertEquals($request->post()->toArray(), $_POST);
+
+        $this->assertInstanceOf('Rapid\Request\Container', $request->get());
+        $this->assertEquals($request->get()->toArray(), $_GET);
+
+        $this->assertInstanceOf('Rapid\Request\Container', $request->request());
+        $this->assertEquals($request->request()->toArray(), $_REQUEST);
+
+        $this->assertInstanceOf('Rapid\Request\Container', $request->cookie());
+        $this->assertEquals($request->cookie()->toArray(), $_COOKIE);
+
+        $this->assertInstanceOf('Rapid\Request\Container', $request->files());
+        $this->assertEquals($request->files()->toArray(), $_FILES);
+
+        $this->assertInstanceOf('Rapid\Request\Container', $request->server());
+        $this->assertEquals($request->server()->toArray(), $_SERVER);
+    }
+
+    public function testIsNotPost()
+    {
+        $this->assertEquals($this->request->isPost(), false);
     }
 
     public function testIsPost()
     {
-        $this->assertEquals($this->request->isPost(), false);
+        $_SERVER = array(
+            'REQUEST_METHOD' => 'POST',
+            'REQUEST_URI' => '/blog/',
+        );
+
+        $request = new \Rapid\Request();
+        $this->assertEquals($request->isPost(), true);
     }
 
     public function testIsXmlHttpRequest()
