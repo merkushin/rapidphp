@@ -33,41 +33,49 @@ class MySQL extends \Rapid\Db
     }
 
     /**
-     * @param string $tablename
+     * @param string $tableName
      * @param array $params
      *
      * @return int|void
      */
-    public function insert($tablename, array $params)
+    public function insert($tableName, array $params)
     {
-        $query = 'INSERT INTO %s(%s) VALUES(%s)';
-        $tablename = sprintf('`%s`', $tablename);
+        $query = 'INSERT INTO `%s`(%s) VALUES(%s)';
         $fields = array();
         $placeholders = array();
         foreach ($params as $field => $value) {
-            $fields[] = sprintf('`%s`', $field);
+            $fields[] = sprintf('`%s`',
+                $this->escapeIdentificator($field)
+            );
             $placeholders[] = sprintf(':%s', $field);
         }
-        $query = sprintf($query, $tablename, implode(', ', $fields), implode(', ', $placeholders));
+        $query = sprintf($query,
+            $this->escapeIdentificator($tableName),
+            implode(', ', $fields),
+            implode(', ', $placeholders)
+        );
         $this->executePreparedStatement($query, $params);
         return $this->driver->lastInsertId();
     }
 
     /**
-     * @param string $tablename
+     * @param string $tableName
      * @param array $params
      * @param array $where
      *
      * @return void
      */
-    public function update($tablename, array $params, $where = array())
+    public function update($tableName, array $params, $where = array())
     {
         $query = 'UPDATE %s SET %s';
         $set = array();
         foreach ($params as $field => $value) {
-            $set[] = sprintf('`%s`=:%s', $field, $field);
+            $set[] = sprintf('`%s`=:%s',
+                $this->escapeIdentificator($field),
+                $field
+            );
         }
-        $query = sprintf($query, $tablename, implode(', ', $set));
+        $query = sprintf($query, $tableName, implode(', ', $set));
 
         if (count($where)) {
             list($whereClause, $whereParams) = $this->prepareWhere($where);
@@ -79,14 +87,14 @@ class MySQL extends \Rapid\Db
     }
 
     /**
-     * @param string $tablename
+     * @param string $tableName
      * @param array $where
      *
      * @return void
      */
-    public function delete($tablename, $where = array())
+    public function delete($tableName, $where = array())
     {
-        $query = sprintf('DELETE FROM %s', $tablename);
+        $query = sprintf('DELETE FROM %s', $this->escapeIdentificator($tableName));
         $params = array();
         if (count($where)) {
             list($whereClause, $whereParams) = $this->prepareWhere($where);
@@ -114,7 +122,10 @@ class MySQL extends \Rapid\Db
                 /**
                  * @todo build query with IN () if $value is array
                  */
-                $clauseStatements[] = sprintf('`%s`=:%s', $field, $field);
+                $clauseStatements[] = sprintf('`%s`=:%s',
+                    $this->escapeIdentificator($field),
+                    $field
+                );
                 $params[$field] = $value;
 
             }
@@ -124,5 +135,10 @@ class MySQL extends \Rapid\Db
         return array(
             $clause, $params
         );
+    }
+
+    protected function escapeIdentificator($value)
+    {
+        return str_replace('`', '``', $value);
     }
 }
